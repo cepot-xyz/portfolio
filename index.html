@@ -4,7 +4,29 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cepot</title>
+    <meta
+      name="theme-color"
+      content="#f9f9f9"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0a0a0a"
+      media="(prefers-color-scheme: dark)"
+    />
+    <title>cepotxyz | Creative Motion Developer</title>
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme")
+          var dark =
+            stored === "dark" ||
+            (stored !== "light" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches)
+          document.documentElement.classList.toggle("dark", dark)
+        } catch {}
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
