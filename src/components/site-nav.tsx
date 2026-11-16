@@ -1,9 +1,9 @@
 import {
-  FolderKanban,
+  BriefcaseBusiness,
+  ClipboardCheck,
   Home,
-  MessageSquareQuote,
+  MessageCircleMore,
   ReceiptText,
-  Wrench,
 } from "lucide-react"
 
 import { Dock, DockIcon } from "@/components/ui/dock"
@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils"
 
 const links = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/services", label: "Services", icon: Wrench },
-  { href: "/portfolio", label: "Portfolio", icon: FolderKanban },
+  { href: "/services", label: "Services", icon: ClipboardCheck },
+  { href: "/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
   { href: "/pricing", label: "Price List", icon: ReceiptText },
-  { href: "/testimonials", label: "Testimonials", icon: MessageSquareQuote },
+  { href: "/testimonials", label: "Testimonials", icon: MessageCircleMore },
 ] as const satisfies readonly {
   href: RoutePath
   label: string

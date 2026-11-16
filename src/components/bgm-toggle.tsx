@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Volume2, VolumeX } from "lucide-react"
 
+import { setAudioEnabled } from "@/lib/audio"
 import { cn } from "@/lib/utils"
 
 const BG_SRC = `${import.meta.env.BASE_URL}Assets/Audio/bgm.ogg`
@@ -43,6 +44,7 @@ export function BgmToggle({ className }: { className?: string }) {
   }, [])
 
   useEffect(() => {
+    setAudioEnabled(enabled)
     if (startedRef.current) {
       fadeTo(enabled ? TARGET_VOLUME : 0)
     }
@@ -112,12 +114,12 @@ export function BgmToggle({ className }: { className?: string }) {
         type="button"
         onClick={() => setEnabled((value) => !value)}
         aria-pressed={enabled}
-        aria-label={enabled ? "Matikan musik" : "Nyalakan musik"}
+        aria-label={enabled ? "Matikan audio" : "Nyalakan audio"}
         className={cn(className)}
       >
         {enabled ? <Volume2 /> : <VolumeX />}
         <span className="sr-only">
-          {enabled ? "Matikan musik" : "Nyalakan musik"}
+          {enabled ? "Matikan audio" : "Nyalakan audio"}
         </span>
       </button>
     </>

@@ -1,8 +1,15 @@
+import { KineticText } from "@/components/ui/kinetic-text"
+
 export function PlaceholderPage({ title }: { title: string }) {
   return (
-    <section className="flex min-h-svh flex-col items-center justify-center gap-4 px-6 text-center">
-      <h1 className="text-5xl font-semibold tracking-tight">{title}</h1>
-      <p className="text-muted-foreground">Halaman {title}</p>
+    <section className="flex min-h-svh flex-col items-center justify-center px-6 pb-28 text-center">
+      <div className="flex min-h-[38.75rem] w-full flex-col items-center justify-start gap-4 sm:min-h-[39.5rem]">
+        <KineticText
+          text={title}
+          className="justify-center text-5xl tracking-tight"
+        />
+        <p className="text-muted-foreground">Halaman {title}</p>
+      </div>
     </section>
   )
 }

@@ -4,7 +4,9 @@ import { BgmToggle } from "@/components/bgm-toggle"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteNav } from "@/components/site-nav"
 import { SoundEffects } from "@/components/sound-effects"
+import { TextLoopSection } from "@/components/text-loop-section"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
+import { ProgressiveBlur } from "@/components/ui/progressive-blur"
 import { useHashRoute, type RoutePath } from "@/lib/use-hash-route"
 import { useInView } from "@/lib/use-in-view"
 import { HomePage } from "@/pages/home"
@@ -43,9 +45,15 @@ function App() {
       <SiteNav current={route} hidden={footerVisible} />
       <main className="min-h-svh bg-background text-foreground">
         <Page />
-        {/* div filler sementara, nanti jangan lupa dihapus yak */}
-        <div className="h-[1080px]" aria-hidden="true" />
+        <TextLoopSection />
       </main>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-30"
+      >
+        <ProgressiveBlur position="top" height="20%" />
+        <ProgressiveBlur position="bottom" height="20%" />
+      </div>
       <SiteFooter footerRef={footerRef} />
     </>
   )
