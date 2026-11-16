@@ -27,6 +27,11 @@ export interface CardSwapItem {
   alt?: string;
 }
 
+export interface CardSwapSize {
+  width: number;
+  height: number;
+}
+
 export interface CardSwapHandle {
   next: () => void;
   prev: () => void;
@@ -36,6 +41,7 @@ export interface CardSwapProps {
   items?: CardSwapItem[];
   width?: number;
   height?: number;
+  cardSizes?: CardSwapSize[];
   cardDistance?: number;
   verticalDistance?: number;
   depth?: number;
@@ -75,8 +81,7 @@ interface Bounds {
 }
 
 interface BoundsInput {
-  width: number;
-  height: number;
+  sizes: CardSwapSize[];
   cardDistance: number;
   verticalDistance: number;
   depth: number;
@@ -88,6 +93,7 @@ interface BoundsInput {
 interface Settings {
   width: number;
   height: number;
+  sizes: CardSwapSize[];
   dx: number;
   dy: number;
   dz: number;
@@ -248,8 +254,7 @@ const MEDIA_RIM = 'inset 0 0 0 1px var(--swap-media-edge)';
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const stackBounds = ({
-  width,
-  height,
+  sizes,
   cardDistance,
   verticalDistance,
   depth,
@@ -265,14 +270,16 @@ const stackBounds = ({
   let maxY = -Infinity;
   for (let i = 0; i < visible; i++) {
     const scale = PERSPECTIVE / (PERSPECTIVE + i * depth);
-    for (const u of [-width / 2, width / 2]) {
-      for (const v of [-height / 2, height / 2]) {
-        const x = (i * cardDistance * spread + u) * scale;
-        const y = (-i * verticalDistance * spread + v + u * slope) * scale;
-        minX = Math.min(minX, x);
-        maxX = Math.max(maxX, x);
-        minY = Math.min(minY, y);
-        maxY = Math.max(maxY, y);
+    for (const size of sizes) {
+      for (const u of [-size.width / 2, size.width / 2]) {
+        for (const v of [-size.height / 2, size.height / 2]) {
+          const x = (i * cardDistance * spread + u) * scale;
+          const y = (-i * verticalDistance * spread + v + u * slope) * scale;
+          minX = Math.min(minX, x);
+          maxX = Math.max(maxX, x);
+          minY = Math.min(minY, y);
+          maxY = Math.max(maxY, y);
+        }
       }
     }
   }
@@ -353,6 +360,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
       items,
       width = 460,
       height = 340,
+      cardSizes,
       cardDistance = 60,
       verticalDistance = 70,
       depth = 90,
@@ -396,11 +404,22 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
     const cardHeight = Math.max(40, Number(height) || 340);
     const visible = clamp(Math.round(visibleCards), 1, Math.max(1, count));
 
+    const sizes = useMemo<CardSwapSize[]>(
+      () =>
+        cards.map((_, index) => {
+          const size = cardSizes?.[index];
+          return {
+            width: Math.max(40, Number(size?.width) || cardWidth),
+            height: Math.max(40, Number(size?.height) || cardHeight)
+          };
+        }),
+      [cards, cardSizes, cardWidth, cardHeight]
+    );
+
     const bounds = useMemo(
       () =>
         stackBounds({
-          width: cardWidth,
-          height: cardHeight,
+          sizes,
           cardDistance,
           verticalDistance,
           depth: Math.max(0, depth),
@@ -408,12 +427,13 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
           visible,
           hoverSpread
         }),
-      [cardWidth, cardHeight, cardDistance, verticalDistance, depth, skewAmount, visible, hoverSpread]
+      [sizes, cardDistance, verticalDistance, depth, skewAmount, visible, hoverSpread]
     );
 
     settingsRef.current = {
       width: cardWidth,
       height: cardHeight,
+      sizes,
       dx: cardDistance,
       dy: verticalDistance,
       dz: Math.max(0, depth),
@@ -504,17 +524,19 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
         return { x: q * s.dx * spread, y: -q * s.dy * spread, z: -q * s.dz, r: 0, p: q };
       };
 
-      const clearance = (s: Settings, dir: Vec) => Math.abs(dir.x) * s.width + Math.abs(dir.y) * s.height + 12;
+      const clearance = (size: CardSwapSize, dir: Vec) =>
+        Math.abs(dir.x) * size.width + Math.abs(dir.y) * size.height + 12;
 
       const targetOf = (card: DeckCard, s: Settings, time: number): Pose => {
+        const size = s.sizes[card.index] ?? s.sizes[0] ?? { width: s.width, height: s.height };
         if (card.phase === 'exit') {
           const base = slot(0, s);
-          const reach = clearance(s, card.dir) * 1.3;
+          const reach = clearance(size, card.dir) * 1.3;
           return { x: base.x + card.dir.x * reach, y: base.y + card.dir.y * reach, z: base.z, r: card.tilt, p: 0 };
         }
         if (card.phase === 'enter') {
           const base = slot(0, s);
-          return { x: base.x, y: base.y + clearance(s, DOWN) * 1.3, z: base.z, r: 0, p: card.p };
+          return { x: base.x, y: base.y + clearance(size, DOWN) * 1.3, z: base.z, r: 0, p: card.p };
         }
         const position = (time < card.hold ? card.from : card.pos) + card.nudge;
         return slot(Math.max(0, position), s);
@@ -622,14 +644,16 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
           if (card.phase === 'exit') {
             const base = slot(0, s);
             const travelled = (card.x - base.x) * card.dir.x + (card.y - base.y) * card.dir.y;
-            if (travelled >= clearance(s, card.dir)) {
+            const size = s.sizes[card.index] ?? s.sizes[0] ?? { width: s.width, height: s.height };
+            if (travelled >= clearance(size, card.dir)) {
               card.phase = 'rest';
               card.top = 0;
               card.hold = 0;
             }
           } else if (card.phase === 'enter') {
             const base = slot(0, s);
-            if (card.y - base.y >= clearance(s, DOWN)) {
+            const size = s.sizes[card.index] ?? s.sizes[0] ?? { width: s.width, height: s.height };
+            if (card.y - base.y >= clearance(size, DOWN)) {
               card.phase = 'rest';
               card.under = false;
               card.hold = 0;
@@ -793,7 +817,8 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
         const time = performance.now();
         drag.samples.push({ x: card.x, y: card.y, t: time });
         while (drag.samples.length > 2 && time - drag.samples[0].t > 90) drag.samples.shift();
-        const progress = clamp(Math.hypot(dx, dy) / (Math.min(s.width, s.height) * 0.3), 0, 1);
+        const size = s.sizes[card.index] ?? s.sizes[0] ?? { width: s.width, height: s.height };
+        const progress = clamp(Math.hypot(dx, dy) / (Math.min(size.width, size.height) * 0.3), 0, 1);
         const next = deck[state.order[1]];
         if (next && next.phase === 'rest') next.nudge = -0.22 * progress;
         wake();
@@ -854,7 +879,8 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
         const fling = Math.hypot(velocity.x, velocity.y);
         const next = deck[state.order[1]];
         if (next) next.nudge = 0;
-        if (event.type !== 'pointercancel' && (distance > Math.min(s.width, s.height) * 0.3 || fling > 700)) {
+        const size = s.sizes[card.index] ?? s.sizes[0] ?? { width: s.width, height: s.height };
+        if (event.type !== 'pointercancel' && (distance > Math.min(size.width, size.height) * 0.3 || fling > 700)) {
           const aim = { x: offset.x + velocity.x * 0.12, y: offset.y + velocity.y * 0.12 };
           const length = Math.hypot(aim.x, aim.y) || 1;
           card.phase = 'rest';
@@ -973,10 +999,17 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
       }
     };
 
+    const slotStyle = (size: CardSwapSize) =>
+      ({
+        ...SLOT_STYLE,
+        '--swap-w': `${size.width}px`,
+        '--swap-h': `${size.height}px`
+      }) as CSSProperties;
+
     const rootStyle = {
       ...(THEMES[theme] ?? THEMES.dark),
-      '--swap-w': `${cardWidth}px`,
-      '--swap-h': `${cardHeight}px`,
+      '--swap-w': `${sizes[0]?.width ?? cardWidth}px`,
+      '--swap-h': `${sizes[0]?.height ?? cardHeight}px`,
       '--swap-ox': `${bounds.originX}px`,
       '--swap-oy': `${bounds.originY}px`,
       '--swap-stage-w': `${bounds.width}px`,
@@ -1007,7 +1040,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(
                 slotRefs.current[index] = node;
               }}
               className={SLOT_CLASS}
-              style={SLOT_STYLE}
+              style={slotStyle(sizes[index] ?? { width: cardWidth, height: cardHeight })}
               data-swap-index={index}
             >
               {card}

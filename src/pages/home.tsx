@@ -1,4 +1,7 @@
+import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
+import { PortfolioCardStack } from "@/components/portfolio-card-stack"
 import { TestimonialsSection } from "@/components/testimonials-section"
+import { KineticText } from "@/components/ui/kinetic-text"
 import { Meteors } from "@/components/ui/meteors"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
 import Text3DFlip from "@/components/ui/text-3d-flip"
@@ -40,6 +43,22 @@ export function HomePage() {
               Learn More
             </span>
           </ShimmerButton>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden px-6 py-20 sm:py-24">
+        <PortfolioBackdrop />
+        <div className="relative z-10">
+          <div className="mb-10 flex flex-col items-center gap-4">
+            <KineticText
+              text="Portfolio"
+              className="justify-center text-4xl tracking-tight sm:text-5xl"
+            />
+            <p className="max-w-md text-muted-foreground">
+              From years to years, here is what are you looking for?
+            </p>
+          </div>
+          <PortfolioCardStack />
         </div>
       </section>
 

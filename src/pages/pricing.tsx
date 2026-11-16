@@ -15,7 +15,7 @@ export function PricingPage() {
         aria-hidden="true"
         className="pointer-events-none fixed inset-x-0 bottom-0 z-0 h-48 bg-linear-to-t from-background to-transparent"
       />
-      <div className="relative z-10 flex min-h-svh flex-col items-center justify-center px-6 pb-28 text-center">
+      <div className="relative z-10 flex min-h-svh flex-col items-center justify-start px-6 pt-40 pb-28 text-center">
         <div className="flex min-h-[38.75rem] w-full flex-col items-center justify-start gap-4 sm:min-h-[39.5rem]">
           <KineticText
             text="Price List"
