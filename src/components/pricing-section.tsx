@@ -182,6 +182,22 @@ function useIdrRate() {
   return idrRate
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches
+  )
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 767px)")
+    const update = () => setIsMobile(query.matches)
+    update()
+    query.addEventListener("change", update)
+    return () => query.removeEventListener("change", update)
+  }, [])
+
+  return isMobile
+}
+
 export function PricingSection({
   variant = "embedded",
 }: {
@@ -189,7 +205,9 @@ export function PricingSection({
 }) {
   const isDark = useIsDark()
   const idrRate = useIdrRate()
+  const isMobile = useIsMobile()
   const isPage = variant === "page"
+  const showBackground = isPage || !isMobile
 
   return (
     <section
@@ -198,22 +216,24 @@ export function PricingSection({
         isPage ? undefined : "py-20 sm:py-24"
       )}
     >
-      <div
-        aria-hidden="true"
-        className={cn(
-          "pointer-events-none -z-10",
-          isPage ? "fixed inset-0" : "absolute inset-0"
-        )}
-      >
-        <AeroShards
-          count={10}
-          shardColor={isDark ? "#d4d4d4" : "#3f3f46"}
-          accentColor={isDark ? "#fafafa" : "#18181b"}
-          lightMode={!isDark}
-          mouseInteraction
-          className="h-full w-full"
-        />
-      </div>
+      {showBackground && (
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none -z-10",
+            isPage ? "fixed inset-0" : "absolute inset-0"
+          )}
+        >
+          <AeroShards
+            count={10}
+            shardColor={isDark ? "#d4d4d4" : "#3f3f46"}
+            accentColor={isDark ? "#fafafa" : "#18181b"}
+            lightMode={!isDark}
+            mouseInteraction
+            className="h-full w-full"
+          />
+        </div>
+      )}
       <div
         className={cn(
           "relative z-10 flex flex-col items-center justify-start text-center",
@@ -233,7 +253,7 @@ export function PricingSection({
             Find the right package for your project
           </TextAnimate>
         </div>
-        <div className="mt-16 flex w-full flex-col gap-16 px-[1px]">
+        <div className="mt-16 flex w-full flex-col gap-16 px-4 md:px-[1px]">
           {categories.map(({ title, cards, columns }, index) => (
             <section key={title} className="flex flex-col gap-6">
               <KineticHeading
