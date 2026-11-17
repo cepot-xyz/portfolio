@@ -3,6 +3,7 @@ import portfolio2025 from "@/assets/portfolio/portfolio-2025.png"
 import portfolio2026 from "@/assets/portfolio/portfolio-2026.png"
 import CardSwap, { Card } from "@/components/CardSwap"
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
+import { playClick } from "@/lib/audio"
 
 const portfolios = [
   {
@@ -93,6 +94,7 @@ export function PortfolioCardStack() {
                   onPointerDown={(event) => event.stopPropagation()}
                   onClick={(event) => {
                     event.stopPropagation()
+                    playClick()
                     window.open(href, "_blank", "noopener,noreferrer")
                   }}
                 >

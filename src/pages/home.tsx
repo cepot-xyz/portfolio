@@ -53,7 +53,7 @@ export function HomePage() {
             </p>
             <ShimmerButton
               type="button"
-              background="var(--cta-bg)"
+              background="#000000"
               onClick={() => {
                 document
                   .getElementById("portfolio")
@@ -61,7 +61,7 @@ export function HomePage() {
               }}
               className="shadow-lg"
             >
-              <span className="text-sm font-medium tracking-tight text-[color:var(--cta-ink)]">
+              <span className="text-sm font-medium tracking-tight text-white">
                 Learn More
               </span>
             </ShimmerButton>

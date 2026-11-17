@@ -1,6 +1,7 @@
 import { useRef, type ComponentType } from "react"
 
 import { BgmToggle } from "@/components/bgm-toggle"
+import GlassSurface from "@/components/GlassSurface"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteNav } from "@/components/site-nav"
 import { SoundEffects } from "@/components/sound-effects"
@@ -24,7 +25,9 @@ const pages: Record<RoutePath, ComponentType> = {
 }
 
 const controlButtonClass =
-  "inline-flex size-10 items-center justify-center rounded-full border border-border bg-background/70 text-foreground shadow-sm backdrop-blur-md transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&_svg]:size-4"
+  "absolute inset-0 inline-flex size-full items-center justify-center rounded-full text-foreground transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&_svg]:size-4"
+
+const controlGlassClass = "shrink-0"
 
 function App() {
   const route = useHashRoute()
@@ -36,11 +39,27 @@ function App() {
     <>
       <SoundEffects />
       <div className="fixed right-4 top-4 z-50 flex flex-col items-center gap-2">
-        <AnimatedThemeToggler
-          aria-label="Ganti tema"
-          className={controlButtonClass}
-        />
-        <BgmToggle className={controlButtonClass} />
+        <GlassSurface
+          width={40}
+          height={40}
+          borderRadius={20}
+          backgroundOpacity={0.35}
+          className={controlGlassClass}
+        >
+          <AnimatedThemeToggler
+            aria-label="Ganti tema"
+            className={controlButtonClass}
+          />
+        </GlassSurface>
+        <GlassSurface
+          width={40}
+          height={40}
+          borderRadius={20}
+          backgroundOpacity={0.35}
+          className={controlGlassClass}
+        >
+          <BgmToggle className={controlButtonClass} />
+        </GlassSurface>
       </div>
       <SiteNav current={route} hidden={footerVisible} />
       <main className="min-h-svh bg-background text-foreground">

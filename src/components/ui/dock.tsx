@@ -93,6 +93,7 @@ export interface DockIconProps extends Omit<
   magnification?: number
   disableMagnification?: boolean
   distance?: number
+  active?: boolean
   mouseX?: MotionValue<number>
   className?: string
   children?: React.ReactNode
@@ -104,6 +105,7 @@ const DockIcon = ({
   magnification = DEFAULT_MAGNIFICATION,
   disableMagnification,
   distance = DEFAULT_DISTANCE,
+  active = false,
   mouseX,
   className,
   children,
@@ -119,11 +121,12 @@ const DockIcon = ({
   })
 
   const targetSize = disableMagnification ? size : magnification
+  const restSize = active ? targetSize : size
 
   const sizeTransform = useTransform(
     distanceCalc,
     [-distance, 0, distance],
-    [size, targetSize, size]
+    [restSize, targetSize, restSize]
   )
 
   const scaleSize = useSpring(sizeTransform, {

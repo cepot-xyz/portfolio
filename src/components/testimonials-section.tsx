@@ -1,3 +1,4 @@
+import GlassSurface from "@/components/GlassSurface"
 import { KineticText } from "@/components/ui/kinetic-text"
 import { Marquee } from "@/components/ui/marquee"
 import { cn } from "@/lib/utils"
@@ -52,15 +53,27 @@ type Testimonial = (typeof testimonials)[number]
 
 function TestimonialCard({ name, role, body }: Testimonial) {
   return (
-    <figure className="flex h-full w-[22rem] shrink-0 flex-col justify-between gap-5 rounded-xl border border-border bg-card/80 p-5 text-left">
-      <blockquote className="text-pretty text-sm leading-relaxed text-card-foreground/90">
-        {body}
-      </blockquote>
-      <figcaption>
-        <p className="text-sm font-medium text-card-foreground">{name}</p>
-        <p className="mt-0.5 text-xs text-muted-foreground">{role}</p>
-      </figcaption>
-    </figure>
+    <GlassSurface
+      width="22rem"
+      height="auto"
+      borderRadius={12}
+      backgroundOpacity={0.25}
+      className="shrink-0"
+    >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-br from-primary/10 via-card/60 to-card/75"
+      />
+      <figure className="relative flex h-full w-full flex-col justify-between gap-5 p-3 text-left">
+        <blockquote className="text-pretty text-sm leading-relaxed text-card-foreground/90">
+          {body}
+        </blockquote>
+        <figcaption>
+          <p className="text-sm font-medium text-card-foreground">{name}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{role}</p>
+        </figcaption>
+      </figure>
+    </GlassSurface>
   )
 }
 

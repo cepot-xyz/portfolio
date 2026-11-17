@@ -7,6 +7,7 @@ import {
 } from "lucide-react"
 
 import { Dock, DockIcon } from "@/components/ui/dock"
+import GlassSurface from "@/components/GlassSurface"
 import { playHover } from "@/lib/audio"
 import type { RoutePath } from "@/lib/use-hash-route"
 import { cn } from "@/lib/utils"
@@ -39,27 +40,40 @@ export function SiteNav({
       )}
     >
       <nav aria-label="Navigasi utama">
-        <Dock className="mt-0 border-border">
-          {links.map(({ href, label, icon: Icon }) => (
-            <DockIcon key={href}>
-              <a
-                href={`#${href}`}
-                aria-label={label}
-                aria-current={current === href ? "page" : undefined}
-                onMouseEnter={() => playHover()}
-                className={cn(
-                  "group relative flex size-full items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                  current === href && "bg-accent text-foreground"
-                )}
-              >
-                <Icon className="size-5" strokeWidth={1.8} aria-hidden="true" />
-                <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-popover px-2 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-                  {label}
-                </span>
-              </a>
-            </DockIcon>
-          ))}
-        </Dock>
+        <GlassSurface
+          width="auto"
+          height={58}
+          borderRadius={29}
+          backgroundOpacity={0.35}
+          style={{ overflow: "visible" }}
+        >
+          <Dock className="mt-0 h-full w-max border-0 bg-transparent p-0 shadow-none backdrop-blur-none dark:bg-transparent">
+            {links.map(({ href, label, icon: Icon }) => (
+              <DockIcon key={href} active={current === href}>
+                <a
+                  href={`#${href}`}
+                  aria-label={label}
+                  aria-current={current === href ? "page" : undefined}
+                  onMouseEnter={() => playHover()}
+                  onClick={(event) => {
+                    if (current !== href) return
+                    event.preventDefault()
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }}
+                  className={cn(
+                    "group relative flex size-full items-center justify-center rounded-full text-foreground/80 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                    current === href && "bg-accent text-foreground"
+                  )}
+                >
+                  <Icon className="size-5" strokeWidth={1.8} aria-hidden="true" />
+                  <span className="pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-border bg-popover px-2 py-1 text-xs font-medium text-popover-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
+                    {label}
+                  </span>
+                </a>
+              </DockIcon>
+            ))}
+          </Dock>
+        </GlassSurface>
       </nav>
     </header>
   )

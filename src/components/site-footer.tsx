@@ -1,5 +1,7 @@
 import type { RefObject } from "react"
 
+import { playClick } from "@/lib/audio"
+
 const socials = [
   {
     label: "Instagram",
@@ -51,6 +53,8 @@ export function SiteFooter({
                 href={href}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noreferrer" : undefined}
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={() => playClick()}
                 className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
                 {label}
