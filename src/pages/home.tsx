@@ -8,6 +8,7 @@ import { TestimonialsSection } from "@/components/testimonials-section"
 import { GhostFibersBackground } from "@/components/ghost-fibers-background"
 import Magnet from "@/components/Magnet"
 import MetallicPaint from "@/components/MetallicPaint"
+import { ViewportMount } from "@/components/viewport-mount"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
@@ -23,7 +24,9 @@ export function HomePage() {
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-hidden"
         >
-          <GhostFibersBackground />
+          <ViewportMount className="h-full w-full">
+            <GhostFibersBackground />
+          </ViewportMount>
         </div>
         <div className="relative z-10 grid w-full max-w-6xl items-center gap-20 lg:grid-cols-2 lg:gap-32">
           <div className="flex justify-center lg:justify-start">
@@ -35,7 +38,9 @@ export function HomePage() {
               maxOffset={40}
               tilt={20}
             >
-              <MetallicPaint imageSrc={logoUrl} scale={0.95} />
+              <ViewportMount className="h-full w-full">
+                <MetallicPaint imageSrc={logoUrl} scale={0.95} />
+              </ViewportMount>
             </Magnet>
           </div>
           <div className="flex flex-col items-center gap-4 lg:items-start lg:text-left">

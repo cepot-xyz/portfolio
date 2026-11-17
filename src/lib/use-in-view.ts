@@ -1,6 +1,14 @@
 import { useEffect, useState, type RefObject } from "react"
 
-export function useInView(ref: RefObject<Element | null>) {
+type UseInViewOptions = {
+  rootMargin?: string
+  threshold?: number
+}
+
+export function useInView(
+  ref: RefObject<Element | null>,
+  { rootMargin, threshold = 0 }: UseInViewOptions = {}
+) {
   const [inView, setInView] = useState(false)
 
   useEffect(() => {
@@ -9,12 +17,12 @@ export function useInView(ref: RefObject<Element | null>) {
 
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0 }
+      { rootMargin, threshold }
     )
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [ref])
+  }, [ref, rootMargin, threshold])
 
   return inView
 }

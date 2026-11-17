@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type CSSProperties } from 'react';
 
+import { releaseWebGLContext } from '@/lib/webgl';
+
 export interface MetallicPaintProps {
   imageSrc?: string;
   text?: string;
@@ -897,6 +899,7 @@ export default function MetallicPaint({
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
       gl.deleteProgram(program);
+      releaseWebGLContext(canvas, gl);
     };
 
     const poll = (now: number) => {

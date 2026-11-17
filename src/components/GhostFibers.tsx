@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type HTMLAttributes } from 'react';
 
+import { releaseWebGLContext } from '@/lib/webgl';
+
 export type GhostFibersFiberStyle = 'dots' | 'dashes' | 'lines';
 
 export type GhostFibersGradient = 'depth' | 'along' | 'across';
@@ -1170,6 +1172,7 @@ const GhostFibers = ({
         gl.deleteFramebuffer(target.framebuffer);
       });
       [dots, dust, bright, down, up, composite].forEach(entry => gl.deleteProgram(entry.program));
+      releaseWebGLContext(canvas, gl);
     };
   }, []);
 

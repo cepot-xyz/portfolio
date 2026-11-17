@@ -48,6 +48,7 @@ interface AnimatedListProps {
   fadeSize?: number;
   displayScrollbar?: boolean;
   frame?: boolean;
+  scrollable?: boolean;
   theme?: 'dark' | 'light';
   accentColor?: string;
   radius?: number;
@@ -156,7 +157,9 @@ const FRAMED_CLASS =
 const FRAME_RIM_CLASS =
   'pointer-events-none absolute inset-0 z-[3] rounded-[inherit] [box-shadow:inset_0_0_0_1px_var(--al-frame-edge),inset_0_1px_0_var(--al-frame-highlight)]';
 const VIEWPORT_CLASS =
-  'relative box-border overflow-x-hidden overflow-y-auto overscroll-contain rounded-[calc(var(--al-radius)+6px)] p-[6px] outline-none [--al-fade-bottom:0px] [--al-fade-top:0px]';
+  'relative box-border rounded-[calc(var(--al-radius)+6px)] p-[6px] outline-none [--al-fade-bottom:0px] [--al-fade-top:0px]';
+const VIEWPORT_SCROLL_CLASS = 'overflow-x-hidden overflow-y-auto overscroll-contain';
+const VIEWPORT_STATIC_CLASS = 'overflow-visible';
 const SCROLLBAR_CLASS =
   '[scrollbar-width:thin] [scrollbar-color:var(--al-thumb)_transparent] [&::-webkit-scrollbar]:w-[6px] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-[3px] [&::-webkit-scrollbar-thumb]:bg-[color:var(--al-thumb)]';
 const BARE_CLASS = '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden';
@@ -186,6 +189,7 @@ const AnimatedList = ({
   fadeSize = 56,
   displayScrollbar = true,
   frame = true,
+  scrollable = true,
   theme = 'dark',
   accentColor,
   radius = 14,
@@ -560,7 +564,7 @@ const AnimatedList = ({
     >
       <div
         ref={viewportRef}
-        className={`${VIEWPORT_CLASS} ${displayScrollbar ? SCROLLBAR_CLASS : BARE_CLASS}`}
+        className={`${VIEWPORT_CLASS} ${scrollable ? VIEWPORT_SCROLL_CLASS : VIEWPORT_STATIC_CLASS} ${displayScrollbar ? SCROLLBAR_CLASS : BARE_CLASS}`}
         role="listbox"
         tabIndex={0}
         aria-activedescendant={selected >= 0 && selected < items.length ? `${baseId}-${selected}` : undefined}

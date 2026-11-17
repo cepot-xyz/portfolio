@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useRef, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
+
+import { releaseWebGLContext } from '@/lib/webgl';
 
 const SIZES: Record<SpecularButtonSize, string> = {
   sm: 'px-5 py-2.5 text-[0.875rem]',
@@ -245,6 +247,9 @@ const SpecularButton = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
+  const [inViewport, setInViewport] = useState(
+    () => typeof IntersectionObserver === 'undefined'
+  );
   const settings: Settings = {
     radius: Math.max(0, radius),
     lineColor: String(lineColor),
@@ -265,6 +270,20 @@ const SpecularButton = ({
   settingsRef.current = settings;
 
   useEffect(() => {
+    const button = buttonRef.current;
+    if (!button || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      entries => setInViewport(entries.some(entry => entry.isIntersecting)),
+      { rootMargin: '240px 0px' }
+    );
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inViewport) return undefined;
+
     const button = buttonRef.current;
     const canvas = canvasRef.current;
     const gl = canvas?.getContext('webgl2', {
@@ -471,9 +490,9 @@ const SpecularButton = ({
       gl.deleteBuffer(buffer);
       gl.deleteVertexArray(vao);
       gl.deleteProgram(program);
-      if (!canvas.isConnected) gl.getExtension('WEBGL_lose_context')?.loseContext();
+      releaseWebGLContext(canvas, gl);
     };
-  }, []);
+  }, [inViewport]);
 
   useEffect(() => {
     wakeRef.current?.();
@@ -498,11 +517,13 @@ const SpecularButton = ({
       }
       {...rest}
     >
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute -inset-6 z-[1] block h-[calc(100%+48px)] w-[calc(100%+48px)]"
-        aria-hidden="true"
-      />
+      {inViewport && (
+        <canvas
+          ref={canvasRef}
+          className="pointer-events-none absolute -inset-6 z-[1] block h-[calc(100%+48px)] w-[calc(100%+48px)]"
+          aria-hidden="true"
+        />
+      )}
       <span className="relative z-[2] inline-flex items-center gap-[inherit]">{children}</span>
     </button>
   );

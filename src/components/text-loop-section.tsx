@@ -20,7 +20,7 @@ export function TextLoopSection({
         text="Sadar Dipalak, Sadar Dibakar, Sadar Dimiskinkan"
         shape="wave"
         speed={25}
-        direction="forward"
+        direction="reverse"
         separator=" - "
         curviness={45}
         tilt={0}

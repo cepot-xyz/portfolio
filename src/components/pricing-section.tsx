@@ -4,6 +4,7 @@ import AeroShards from "@/components/AeroShards"
 import { PriceCard } from "@/components/price-card"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { TextAnimate } from "@/components/ui/text-animate"
+import { ViewportMount } from "@/components/viewport-mount"
 import { PRICING_TARGET_KEY } from "@/lib/pricing-navigation"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
@@ -245,14 +246,16 @@ export function PricingSection({
             isPage ? "fixed inset-0" : "absolute inset-0"
           )}
         >
-          <AeroShards
-            count={10}
-            shardColor={isDark ? "#d4d4d4" : "#3f3f46"}
-            accentColor={isDark ? "#fafafa" : "#18181b"}
-            lightMode={!isDark}
-            mouseInteraction
-            className="h-full w-full"
-          />
+          <ViewportMount className="h-full w-full">
+            <AeroShards
+              count={10}
+              shardColor={isDark ? "#d4d4d4" : "#3f3f46"}
+              accentColor={isDark ? "#fafafa" : "#18181b"}
+              lightMode={!isDark}
+              mouseInteraction
+              className="h-full w-full"
+            />
+          </ViewportMount>
         </div>
       )}
       <div
@@ -295,10 +298,10 @@ export function PricingSection({
                   <div
                     key={cardIndex}
                     className={cn(
-                      "w-full sm:w-[calc(50%-0.75rem)]",
+                      "w-[75%] sm:w-[calc(37.5%-0.5625rem)]",
                       columns === 3
-                        ? "lg:w-[calc(33.333%-1rem)]"
-                        : "lg:w-[calc(25%-1.125rem)]"
+                        ? "lg:w-[calc(25%-0.75rem)]"
+                        : "lg:w-[calc(18.75%-0.84375rem)]"
                     )}
                   >
                     <PriceCard {...card} rate={idrRate} />

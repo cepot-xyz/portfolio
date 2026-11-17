@@ -71,7 +71,7 @@ export function PriceCard({
           "relative flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-card text-card-foreground shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] ring-1 ring-foreground/5 ring-inset dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]",
           className
         )}
-        style={{ minHeight: 420, ...style }}
+        style={{ minHeight: 560, ...style }}
       >
         <div className="flex flex-1 flex-col p-6">
           <p className="text-xs text-muted-foreground">{eyebrow}</p>
@@ -108,15 +108,16 @@ export function PriceCard({
               animation="fade"
               animateOnce
               stagger={0.04}
-              showGradients
+              showGradients={false}
               fadeSize={24}
               displayScrollbar={false}
               frame={false}
+              scrollable={false}
               theme={isDark ? "dark" : "light"}
               radius={8}
               gap={2}
               width="100%"
-              maxHeight={150}
+              maxHeight="none"
               selectOnHover={false}
               enableArrowNavigation={false}
               itemClassName="pointer-events-none"

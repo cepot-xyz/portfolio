@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type CSSProperties } from 'react';
 
+import { releaseWebGLContext } from '@/lib/webgl';
+
 const MAX_PINGS = 6;
 const INTRO_SECONDS = 2;
 export type ScannerDirection = 'vertical' | 'horizontal' | 'diagonal';
@@ -529,7 +531,7 @@ const Scanner = ({
       document.removeEventListener('visibilitychange', onVisibility);
       gl.deleteVertexArray(vao);
       gl.deleteProgram(shader.program);
-      if (!canvas.isConnected) gl.getExtension('WEBGL_lose_context')?.loseContext();
+      releaseWebGLContext(canvas, gl);
     };
   }, []);
 

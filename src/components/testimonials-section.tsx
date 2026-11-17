@@ -1,7 +1,10 @@
+import { useRef } from "react"
+
 import GlassSurface from "@/components/GlassSurface"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { Marquee } from "@/components/ui/marquee"
+import { useInView } from "@/lib/use-in-view"
 import { cn } from "@/lib/utils"
 
 const testimonials = [
@@ -79,8 +82,12 @@ function TestimonialCard({ name, role, body }: Testimonial) {
 }
 
 export function TestimonialsSection({ className }: { className?: string }) {
+  const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { rootMargin: "200px 0px" })
+
   return (
     <section
+      ref={sectionRef}
       aria-label="Testimoni klien"
       className={cn("relative overflow-hidden py-0", className)}
     >
@@ -100,12 +107,12 @@ export function TestimonialsSection({ className }: { className?: string }) {
         </TextAnimate>
       </div>
       <div className="flex flex-col gap-4">
-        <Marquee className="[--duration:35s]">
+        <Marquee paused={!inView} className="[--duration:35s]">
           {firstRow.map((testimonial) => (
             <TestimonialCard key={testimonial.name} {...testimonial} />
           ))}
         </Marquee>
-        <Marquee reverse className="[--duration:40s]">
+        <Marquee paused={!inView} reverse className="[--duration:40s]">
           {secondRow.map((testimonial) => (
             <TestimonialCard key={testimonial.name} {...testimonial} />
           ))}
