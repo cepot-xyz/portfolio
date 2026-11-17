@@ -5,17 +5,14 @@ import { setAudioEnabled } from "@/lib/audio"
 import { cn } from "@/lib/utils"
 
 const BG_SRC = `${import.meta.env.BASE_URL}Assets/Audio/bgm.ogg`
-const TARGET_VOLUME = 1
+const TARGET_VOLUME = 0.5
 const FADE_DURATION = 1000
 
 export function BgmToggle({ className }: { className?: string }) {
   const [enabled, setEnabled] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
-  const enabledRef = useRef(enabled)
-  const startedRef = useRef(false)
   const fadeFrameRef = useRef<number | null>(null)
-
-  enabledRef.current = enabled
+  const pauseTimerRef = useRef<number | null>(null)
 
   const fadeTo = useCallback((target: number) => {
     const audio = audioRef.current
@@ -45,60 +42,56 @@ export function BgmToggle({ className }: { className?: string }) {
 
   useEffect(() => {
     setAudioEnabled(enabled)
-    if (startedRef.current) {
-      fadeTo(enabled ? TARGET_VOLUME : 0)
+
+    const audio = audioRef.current
+    if (!audio) return
+
+    if (pauseTimerRef.current !== null) {
+      window.clearTimeout(pauseTimerRef.current)
+      pauseTimerRef.current = null
+    }
+
+    if (!enabled) {
+      if (audio.paused && audio.volume === 0) return
+
+      fadeTo(0)
+      pauseTimerRef.current = window.setTimeout(() => {
+        audio.pause()
+        pauseTimerRef.current = null
+      }, FADE_DURATION)
+      return
+    }
+
+    let cancelled = false
+    audio.volume = 0
+
+    const promise = audio.play()
+    if (promise) {
+      promise
+        .then(() => {
+          if (!cancelled) fadeTo(TARGET_VOLUME)
+        })
+        .catch(() => {})
+    } else {
+      fadeTo(TARGET_VOLUME)
+    }
+
+    return () => {
+      cancelled = true
     }
   }, [enabled, fadeTo])
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-
-    let cancelled = false
-    audio.volume = 0
-    startedRef.current = false
-
-    const removeGestureListeners = () => {
-      window.removeEventListener("pointerdown", handleFirstGesture)
-      window.removeEventListener("keydown", handleFirstGesture)
-    }
-
-    const announceStarted = () => {
-      if (cancelled) return
-      startedRef.current = true
-      removeGestureListeners()
-      fadeTo(enabledRef.current ? TARGET_VOLUME : 0)
-    }
-
-    const startPlayback = () => {
-      if (startedRef.current) return
-      const promise = audio.play()
-      if (promise) {
-        promise.then(announceStarted).catch(() => {})
-      } else {
-        announceStarted()
-      }
-    }
-
-    function handleFirstGesture() {
-      startPlayback()
-    }
-
-    startPlayback()
-    window.addEventListener("pointerdown", handleFirstGesture)
-    window.addEventListener("keydown", handleFirstGesture)
-
     return () => {
-      cancelled = true
-      removeGestureListeners()
       if (fadeFrameRef.current !== null) {
         cancelAnimationFrame(fadeFrameRef.current)
-        fadeFrameRef.current = null
       }
-      startedRef.current = false
-      audio.pause()
+      if (pauseTimerRef.current !== null) {
+        window.clearTimeout(pauseTimerRef.current)
+      }
+      audioRef.current?.pause()
     }
-  }, [fadeTo])
+  }, [])
 
   return (
     <>
@@ -106,7 +99,7 @@ export function BgmToggle({ className }: { className?: string }) {
         ref={audioRef}
         src={BG_SRC}
         loop
-        preload="auto"
+        preload="none"
         aria-hidden="true"
         className="hidden"
       />
