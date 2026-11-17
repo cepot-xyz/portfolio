@@ -1,8 +1,21 @@
+import { CursorGridBackground } from "@/components/cursor-grid-background"
 import TextLoop from "@/components/TextLoop"
 
-export function TextLoopSection() {
+export function TextLoopSection({
+  showGridBackground = false,
+}: {
+  showGridBackground?: boolean
+}) {
   return (
-    <section className="py-0">
+    <section className="relative overflow-hidden py-0">
+      {showGridBackground && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
+          <CursorGridBackground />
+        </div>
+      )}
       <TextLoop
         text="Sadar Dipalak, Sadar Dibakar, Sadar Dimiskinkan"
         shape="wave"
@@ -27,6 +40,7 @@ export function TextLoopSection() {
         outline={false}
         pauseOnHover={false}
         outlineWidth={1.5}
+        className={showGridBackground ? "z-10" : undefined}
       />
     </section>
   )

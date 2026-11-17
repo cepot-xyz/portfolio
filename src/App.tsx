@@ -45,7 +45,9 @@ function App() {
       <SiteNav current={route} hidden={footerVisible} />
       <main className="min-h-svh bg-background text-foreground">
         <Page />
-        <TextLoopSection />
+        <TextLoopSection
+          showGridBackground={route === "/" || route === "/portfolio"}
+        />
       </main>
       <div
         aria-hidden="true"

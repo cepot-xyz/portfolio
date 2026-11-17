@@ -26,8 +26,9 @@ export function HomePage() {
               wrapperClassName="h-[18rem] w-full lg:h-[24rem]"
               innerClassName="h-full w-full"
               padding={100}
-              magnetStrength={3}
+              magnetStrength={1}
               maxOffset={40}
+              tilt={20}
             >
               <MetallicPaint imageSrc={logoUrl} scale={0.95} />
             </Magnet>
@@ -54,7 +55,9 @@ export function HomePage() {
               type="button"
               background="var(--cta-bg)"
               onClick={() => {
-                window.location.hash = "/portfolio"
+                document
+                  .getElementById("portfolio")
+                  ?.scrollIntoView({ behavior: "smooth" })
               }}
               className="shadow-lg"
             >
@@ -66,7 +69,10 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden px-6 py-20 sm:py-24">
+      <section
+        id="portfolio"
+        className="relative overflow-hidden px-6 py-20 sm:py-24"
+      >
         <PortfolioBackdrop />
         <div className="relative z-10">
           <div className="mb-10 flex flex-col items-center gap-4">
