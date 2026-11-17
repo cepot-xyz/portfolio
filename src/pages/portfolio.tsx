@@ -8,8 +8,8 @@ export function PortfolioPage() {
     <section className="relative flex min-h-svh flex-col items-center justify-start overflow-hidden px-6 pt-40 pb-28 text-center">
       <PortfolioBackdrop />
 
-      <div className="relative z-10 flex w-full flex-col items-center gap-8">
-        <div className="flex flex-col items-center gap-4">
+      <div className="pointer-events-none relative z-10 flex w-full flex-col items-center gap-8">
+        <div className="pointer-events-auto flex flex-col items-center gap-4">
           <KineticHeading className="text-5xl sm:text-6xl">
             Portfolio
           </KineticHeading>

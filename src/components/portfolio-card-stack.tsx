@@ -45,7 +45,7 @@ const portfolioCardSizes = portfolios.map(({ imageWidth, imageHeight }) => {
 
 export function PortfolioCardStack() {
   return (
-    <div className="h-[300px] w-full sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[760px]">
+    <div className="pointer-events-none h-[300px] w-full sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[760px]">
       <CardSwap
         cardSizes={portfolioCardSizes}
         cardDistance={36}

@@ -90,8 +90,8 @@ export function HomePage() {
         className="relative overflow-hidden px-6 py-20 sm:py-24"
       >
         <PortfolioBackdrop />
-        <div className="relative z-10">
-          <div className="mb-10 flex flex-col items-center gap-4">
+        <div className="pointer-events-none relative z-10">
+          <div className="pointer-events-auto mb-10 flex flex-col items-center gap-4">
             <KineticHeading as="h2" className="text-4xl sm:text-5xl">
               Portfolio
             </KineticHeading>

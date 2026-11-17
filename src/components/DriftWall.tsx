@@ -31,6 +31,7 @@ export interface DriftWallProps {
   dim?: number;
   grayscale?: boolean;
   overlayColor?: string;
+  focusable?: boolean;
   className?: string;
   style?: CSSProperties;
 }
@@ -81,6 +82,7 @@ const DriftWall = ({
   dim = 0.55,
   grayscale = false,
   overlayColor = '#060010',
+  focusable = true,
   className = '',
   style
 }: DriftWallProps) => {
@@ -318,6 +320,7 @@ const DriftWall = ({
       className: cx(tileClass, activeId === id && 'is-active'),
       'data-tile-id': id,
       'data-col': colIndex,
+      tabIndex: focusable ? undefined : -1,
       onFocus: () => activate(id, colIndex),
       onBlur: release
     };
@@ -329,7 +332,12 @@ const DriftWall = ({
       );
     }
     return (
-      <div key={id} tabIndex={0} role="button" aria-label={item.title ?? 'tile'} {...commonProps}>
+      <div
+        key={id}
+        role={focusable ? 'button' : undefined}
+        aria-label={focusable ? (item.title ?? 'tile') : undefined}
+        {...commonProps}
+      >
         {inner}
       </div>
     );
