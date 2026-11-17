@@ -2,6 +2,7 @@ import { motion } from "motion/react"
 
 import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
 import { PortfolioCardStack } from "@/components/portfolio-card-stack"
+import { PricingSection } from "@/components/pricing-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { GhostFibersBackground } from "@/components/ghost-fibers-background"
 import Magnet from "@/components/Magnet"
@@ -103,12 +104,14 @@ export function HomePage() {
               once
               className="max-w-md text-muted-foreground"
             >
-              From years to years, here is what are you looking for?
+              Things I've built and worked on
             </TextAnimate>
           </div>
           <PortfolioCardStack />
         </div>
       </section>
+
+      <PricingSection />
 
       <TestimonialsSection />
     </>
