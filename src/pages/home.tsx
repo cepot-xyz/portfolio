@@ -34,12 +34,13 @@ export function HomePage() {
           </p>
           <ShimmerButton
             type="button"
+            background="var(--cta-bg)"
             onClick={() => {
               window.location.hash = "/portfolio"
             }}
             className="shadow-lg"
           >
-            <span className="text-sm font-medium tracking-tight text-white">
+            <span className="text-sm font-medium tracking-tight text-[color:var(--cta-ink)]">
               Learn More
             </span>
           </ShimmerButton>

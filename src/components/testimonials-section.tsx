@@ -70,11 +70,14 @@ export function TestimonialsSection({ className }: { className?: string }) {
       aria-label="Testimoni klien"
       className={cn("relative overflow-hidden py-0", className)}
     >
-      <div className="mb-10 flex justify-center px-6">
+      <div className="mb-10 flex flex-col items-center gap-4 px-6 text-center">
         <KineticText
           text="Testimonials"
           className="justify-center text-4xl tracking-tight sm:text-5xl"
         />
+        <p className="max-w-md text-muted-foreground">
+          See how other say about us
+        </p>
       </div>
       <div className="flex flex-col gap-4">
         <Marquee className="[--duration:35s]">

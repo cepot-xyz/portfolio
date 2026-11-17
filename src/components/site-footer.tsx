@@ -31,7 +31,7 @@ export function SiteFooter({
   return (
     <footer
       ref={footerRef}
-      className="relative z-40 bg-card text-card-foreground"
+      className="relative z-40 bg-linear-to-b from-footer/0 to-footer text-card-foreground"
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-10 px-6 py-12 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-sm space-y-3">

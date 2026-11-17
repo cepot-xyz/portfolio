@@ -16,7 +16,8 @@ export function TextLoopSection() {
         letterSpacing={2}
         uppercase
         ribbon
-        ribbonColor="#222222"
+        ribbonColor="var(--ribbon-bg)"
+        color="var(--ribbon-ink)"
         ribbonWidth={100}
         edgeFade={0}
         cross={false}

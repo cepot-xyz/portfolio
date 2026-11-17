@@ -41,6 +41,7 @@
     --color-card: var(--card);
     --color-foreground: var(--foreground);
     --color-background: var(--background);
+    --color-footer: var(--footer-bg);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -123,6 +124,11 @@
     --sidebar-accent-foreground: #000000;
     --sidebar-border: #d2d2d2;
     --sidebar-ring: #0060de;
+    --ribbon-bg: #d9d9d9;
+    --ribbon-ink: #222222;
+    --cta-bg: #d9d9d9;
+    --cta-ink: #222222;
+    --footer-bg: #d9d9d9;
 }
 
 .dark {
@@ -157,6 +163,11 @@
     --sidebar-accent-foreground: #f5f5f5;
     --sidebar-border: #262626;
     --sidebar-ring: #737373;
+    --ribbon-bg: #222222;
+    --ribbon-ink: #ffffff;
+    --cta-bg: #000000;
+    --cta-ink: #ffffff;
+    --footer-bg: #171717;
 }
 
 @layer base {
@@ -170,6 +181,8 @@
     }
   body {
     @apply bg-background text-foreground;
+    -webkit-user-select: none;
+    user-select: none;
     }
   html {
     @apply font-sans;
@@ -185,13 +198,26 @@
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
   mix-blend-mode: normal;
+}
+
+@keyframes magicui-vt-hold {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Scoped to AnimatedThemeToggler - the toggler sets the data-attribute and the variable only during a theme toggle. */
 html[data-magicui-theme-vt="active"]::view-transition-group(root) {
   animation-duration: var(--magicui-theme-toggle-vt-duration);
+}
+
+html[data-magicui-theme-vt="active"]::view-transition-old(root),
+html[data-magicui-theme-vt="active"]::view-transition-new(root) {
+  animation: magicui-vt-hold var(--magicui-theme-toggle-vt-duration) linear both;
 }
 
 html[data-magicui-theme-vt="active"]::view-transition-new(root) {
