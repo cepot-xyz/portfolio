@@ -99,7 +99,7 @@ export function BgmToggle({ className }: { className?: string }) {
         ref={audioRef}
         src={BG_SRC}
         loop
-        preload="none"
+        preload="auto"
         aria-hidden="true"
         className="hidden"
       />
