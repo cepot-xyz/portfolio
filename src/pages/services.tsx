@@ -1,10 +1,5 @@
-import { PlaceholderPage } from "@/components/placeholder-page"
+import { ServicesSection } from "@/components/services-section"
 
 export function ServicesPage() {
-  return (
-    <PlaceholderPage
-      title="Services"
-      subtitle="Here's How I can help bring your ideas to life"
-    />
-  )
+  return <ServicesSection variant="page" />
 }

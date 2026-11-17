@@ -4,6 +4,7 @@ import AeroShards from "@/components/AeroShards"
 import { PriceCard } from "@/components/price-card"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { TextAnimate } from "@/components/ui/text-animate"
+import { PRICING_TARGET_KEY } from "@/lib/pricing-navigation"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
 
@@ -18,6 +19,7 @@ type PricingCardData = {
 }
 
 type PricingCategory = {
+  id: string
   title: string
   cards: PricingCardData[]
   columns: 3 | 4
@@ -25,6 +27,7 @@ type PricingCategory = {
 
 const categories: PricingCategory[] = [
   {
+    id: "motion-graphic",
     title: "Motion Graphic Price List",
     columns: 3,
     cards: [
@@ -62,6 +65,7 @@ const categories: PricingCategory[] = [
     ],
   },
   {
+    id: "video-editing",
     title: "Video Editing Price List",
     columns: 3,
     cards: [
@@ -106,6 +110,7 @@ const categories: PricingCategory[] = [
     ],
   },
   {
+    id: "graphic-design",
     title: "Graphic Design Price List",
     columns: 4,
     cards: [
@@ -209,6 +214,22 @@ export function PricingSection({
   const isPage = variant === "page"
   const showBackground = isPage || !isMobile
 
+  useEffect(() => {
+    if (!isPage) return
+
+    const target = sessionStorage.getItem(PRICING_TARGET_KEY)
+    if (!target) return
+
+    sessionStorage.removeItem(PRICING_TARGET_KEY)
+    const timeout = window.setTimeout(() => {
+      document
+        .getElementById(target)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }, 150)
+
+    return () => window.clearTimeout(timeout)
+  }, [isPage])
+
   return (
     <section
       className={cn(
@@ -254,8 +275,12 @@ export function PricingSection({
           </TextAnimate>
         </div>
         <div className="mt-16 flex w-full flex-col gap-16 px-4 md:px-[1px]">
-          {categories.map(({ title, cards, columns }, index) => (
-            <section key={title} className="flex flex-col gap-6">
+          {categories.map(({ id, title, cards, columns }, index) => (
+            <section
+              key={title}
+              id={id}
+              className="flex scroll-mt-24 flex-col gap-6"
+            >
               <KineticHeading
                 as="h2"
                 className={cn(

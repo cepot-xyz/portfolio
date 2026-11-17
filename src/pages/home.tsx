@@ -3,6 +3,7 @@ import { motion } from "motion/react"
 import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
 import { PortfolioCardStack } from "@/components/portfolio-card-stack"
 import { PricingSection } from "@/components/pricing-section"
+import { ServicesSection } from "@/components/services-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { GhostFibersBackground } from "@/components/ghost-fibers-background"
 import Magnet from "@/components/Magnet"
@@ -110,6 +111,8 @@ export function HomePage() {
           <PortfolioCardStack />
         </div>
       </section>
+
+      <ServicesSection />
 
       <PricingSection />
 
