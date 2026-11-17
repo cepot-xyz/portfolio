@@ -1,5 +1,6 @@
 import { DitherField } from "@/components/ui/dither-field"
-import { KineticText } from "@/components/ui/kinetic-text"
+import { TextAnimate } from "@/components/ui/text-animate"
+import { KineticHeading } from "@/components/ui/kinetic-heading"
 
 export function PricingPage() {
   return (
@@ -17,11 +18,17 @@ export function PricingPage() {
       />
       <div className="relative z-10 flex flex-col items-center justify-start px-6 pt-40 pb-[15px] text-center">
         <div className="flex w-full flex-col items-center justify-start gap-4">
-          <KineticText
-            text="Price List"
-            className="justify-center text-5xl tracking-tight"
-          />
-          <p className="max-w-md text-muted-foreground">Halaman Price List</p>
+          <KineticHeading className="text-5xl">Price List</KineticHeading>
+          <TextAnimate
+            as="p"
+            animation="blurInUp"
+            by="character"
+            delay={0.1}
+            once
+            className="max-w-md text-muted-foreground"
+          >
+            Find the right package for your project
+          </TextAnimate>
         </div>
       </div>
     </section>

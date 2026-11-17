@@ -1,10 +1,13 @@
+import { motion } from "motion/react"
+
 import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
 import { PortfolioCardStack } from "@/components/portfolio-card-stack"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { GhostFibersBackground } from "@/components/ghost-fibers-background"
 import Magnet from "@/components/Magnet"
 import MetallicPaint from "@/components/MetallicPaint"
-import { KineticText } from "@/components/ui/kinetic-text"
+import { TextAnimate } from "@/components/ui/text-animate"
+import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
 import Text3DFlip from "@/components/ui/text-3d-flip"
 
@@ -48,23 +51,36 @@ export function HomePage() {
                 transition={{ type: "spring", damping: 25, stiffness: 160 }}
               />
             </div>
-            <p className="max-w-md text-muted-foreground">
-              Glad to Be of Your Service
-            </p>
-            <ShimmerButton
-              type="button"
-              background="#000000"
-              onClick={() => {
-                document
-                  .getElementById("portfolio")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }}
-              className="shadow-lg"
+            <TextAnimate
+              as="p"
+              animation="blurInUp"
+              by="character"
+              delay={0.1}
+              once
+              className="max-w-md text-muted-foreground"
             >
-              <span className="text-sm font-medium tracking-tight text-white">
-                Learn More
-              </span>
-            </ShimmerButton>
+              Glad to Be of Your Service
+            </TextAnimate>
+            <motion.div
+              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              <ShimmerButton
+                type="button"
+                background="#000000"
+                onClick={() => {
+                  document
+                    .getElementById("portfolio")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }}
+                className="shadow-lg"
+              >
+                <span className="text-sm font-medium tracking-tight text-white">
+                  Learn More
+                </span>
+              </ShimmerButton>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -76,13 +92,19 @@ export function HomePage() {
         <PortfolioBackdrop />
         <div className="relative z-10">
           <div className="mb-10 flex flex-col items-center gap-4">
-            <KineticText
-              text="Portfolio"
-              className="justify-center text-4xl tracking-tight sm:text-5xl"
-            />
-            <p className="max-w-md text-muted-foreground">
+            <KineticHeading as="h2" className="text-4xl sm:text-5xl">
+              Portfolio
+            </KineticHeading>
+            <TextAnimate
+              as="p"
+              animation="blurInUp"
+              by="character"
+              delay={0.1}
+              once
+              className="max-w-md text-muted-foreground"
+            >
               From years to years, here is what are you looking for?
-            </p>
+            </TextAnimate>
           </div>
           <PortfolioCardStack />
         </div>

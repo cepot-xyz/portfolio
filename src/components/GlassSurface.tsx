@@ -863,16 +863,16 @@ const GlassSurface = ({
       : {};
 
   const frost = blurSupported
-    ? `light-dark(hsl(0 0% 100% / ${0.12 + backgroundOpacity * 0.5}), hsl(0 0% 100% / ${0.04 + backgroundOpacity * 0.3}))`
+    ? `light-dark(hsl(0 0% 100% / ${0.12 + backgroundOpacity * 0.75}), hsl(0 0% 100% / ${0.04 + backgroundOpacity * 1}))`
     : 'light-dark(hsl(0 0% 100% / 0.72), hsl(0 0% 12% / 0.72))';
-  const fallbackFilter = `blur(12px) saturate(${saturation * 1.4}) brightness(1.04)`;
+  const fallbackFilter = `blur(1px) saturate(${saturation * 1.4}) brightness(1.04)`;
 
   const modeStyle: CSSProperties = webgl
     ? { boxShadow: WEBGL_SHADOW }
     : refractive
       ? {
           background: `light-dark(hsl(0 0% 100% / ${backgroundOpacity}), hsl(0 0% 0% / ${backgroundOpacity}))`,
-          backdropFilter: `url(#${filterId}) saturate(${saturation})`,
+          backdropFilter: `url(#${filterId}) blur(2px) saturate(${saturation})`,
           boxShadow: SVG_SHADOW
         }
       : {

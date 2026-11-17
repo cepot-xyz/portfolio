@@ -1,6 +1,7 @@
 import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
 import { PortfolioCardStack } from "@/components/portfolio-card-stack"
-import { KineticText } from "@/components/ui/kinetic-text"
+import { TextAnimate } from "@/components/ui/text-animate"
+import { KineticHeading } from "@/components/ui/kinetic-heading"
 
 export function PortfolioPage() {
   return (
@@ -9,13 +10,19 @@ export function PortfolioPage() {
 
       <div className="relative z-10 flex w-full flex-col items-center gap-8">
         <div className="flex flex-col items-center gap-4">
-          <KineticText
-            text="Portfolio"
-            className="justify-center text-5xl tracking-tight sm:text-6xl"
-          />
-          <p className="max-w-md text-muted-foreground">
-            From years to years, here is what are you looking for?
-          </p>
+          <KineticHeading className="text-5xl sm:text-6xl">
+            Portfolio
+          </KineticHeading>
+          <TextAnimate
+            as="p"
+            animation="blurInUp"
+            by="character"
+            delay={0.1}
+            once
+            className="max-w-md text-muted-foreground"
+          >
+            Things I've built and worked on
+          </TextAnimate>
         </div>
 
         <PortfolioCardStack />

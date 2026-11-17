@@ -1,5 +1,6 @@
 import GlassSurface from "@/components/GlassSurface"
-import { KineticText } from "@/components/ui/kinetic-text"
+import { TextAnimate } from "@/components/ui/text-animate"
+import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { Marquee } from "@/components/ui/marquee"
 import { cn } from "@/lib/utils"
 
@@ -84,13 +85,19 @@ export function TestimonialsSection({ className }: { className?: string }) {
       className={cn("relative overflow-hidden py-0", className)}
     >
       <div className="mb-10 flex flex-col items-center gap-4 px-6 text-center">
-        <KineticText
-          text="Testimonials"
-          className="justify-center text-4xl tracking-tight sm:text-5xl"
-        />
-        <p className="max-w-md text-muted-foreground">
-          See how other say about us
-        </p>
+        <KineticHeading as="h2" className="text-4xl sm:text-5xl">
+          Testimonials
+        </KineticHeading>
+        <TextAnimate
+          as="p"
+          animation="blurInUp"
+          by="character"
+          delay={0.1}
+          once
+          className="max-w-md text-muted-foreground"
+        >
+          Kind words from people I've worked with
+        </TextAnimate>
       </div>
       <div className="flex flex-col gap-4">
         <Marquee className="[--duration:35s]">
