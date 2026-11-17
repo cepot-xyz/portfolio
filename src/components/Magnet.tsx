@@ -13,6 +13,7 @@ export interface MagnetSpring {
 export interface MagnetProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   padding?: number;
+  alwaysFollow?: boolean;
   disabled?: boolean;
   magnetStrength?: number;
   maxOffset?: number;
@@ -32,6 +33,7 @@ type Point = { x: number; y: number };
 
 type Settings = {
   padding: number;
+  alwaysFollow: boolean;
   disabled: boolean;
   strength: number;
   maxOffset?: number;
@@ -80,7 +82,7 @@ const arbitrate = () => {
     let near: { dx: number; dy: number; outside: number } | null = null;
     if (field.pointer && !s.disabled && !entry.reduce) {
       near = reach(entry.wrapper.getBoundingClientRect(), field.pointer);
-      if (near.outside > s.padding) near = null;
+      if (!s.alwaysFollow && near.outside > s.padding) near = null;
     }
     if (!s.exclusive) {
       if (near || entry.active) entry.wake();
@@ -125,6 +127,7 @@ const attach = () => {
 const Magnet = ({
   children,
   padding = 100,
+  alwaysFollow = false,
   disabled = false,
   magnetStrength = 2,
   maxOffset,
@@ -144,6 +147,7 @@ const Magnet = ({
   const wakeRef = useRef<(() => void) | null>(null);
   const settings: Settings = {
     padding: Math.max(0, padding),
+    alwaysFollow,
     disabled,
     strength: Math.max(0.1, magnetStrength),
     maxOffset,
@@ -191,8 +195,8 @@ const Magnet = ({
       if (s.exclusive && field.owner !== entry) return { target, engaged: false };
       const rect = wrapper.getBoundingClientRect();
       const { dx, dy, outside } = reach(rect, field.pointer);
-      if (outside > s.padding) return { target, engaged: false };
-      const pull = s.padding > 0 ? 1 - smoothstep(s.padding * 0.5, s.padding, outside) : 1;
+      if (!s.alwaysFollow && outside > s.padding) return { target, engaged: false };
+      const pull = s.alwaysFollow ? 1 : s.padding > 0 ? 1 - smoothstep(s.padding * 0.5, s.padding, outside) : 1;
       let x = s.axis === 'y' ? 0 : (dx / s.strength) * pull;
       let y = s.axis === 'x' ? 0 : (dy / s.strength) * pull;
       if (s.maxOffset !== undefined && s.maxOffset !== null) {
