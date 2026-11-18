@@ -10,6 +10,7 @@ import Magnet from "@/components/Magnet"
 import MetallicPaint from "@/components/MetallicPaint"
 import { ViewportMount } from "@/components/viewport-mount"
 import { useDeviceProfile } from "@/lib/use-device-profile"
+import { useIsDark } from "@/lib/use-is-dark"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
@@ -19,6 +20,7 @@ const logoUrl = `${import.meta.env.BASE_URL}Assets/Cepot White Logo.svg`
 
 export function HomePage() {
   const { fullEffects } = useDeviceProfile()
+  const isDark = useIsDark()
 
   return (
     <>
@@ -52,6 +54,11 @@ export function HomePage() {
                   src={logoUrl}
                   alt=""
                   className="h-full w-full object-contain"
+                  style={
+                    isDark
+                      ? undefined
+                      : { filter: "brightness(0) invert(13.3%)" }
+                  }
                 />
               </div>
             )}

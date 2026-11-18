@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 const titles = {
   "/": "cepotxyz | Creative Motion Developer",
+  "/about": "cepotxyz | About",
   "/services": "cepotxyz | Services",
   "/portfolio": "cepotxyz | Portfolio",
   "/pricing": "cepotxyz | Price List",
