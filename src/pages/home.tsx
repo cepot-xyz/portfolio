@@ -19,8 +19,9 @@ import Text3DFlip from "@/components/ui/text-3d-flip"
 const logoUrl = `${import.meta.env.BASE_URL}Assets/Cepot White Logo.svg`
 
 export function HomePage() {
-  const { fullEffects } = useDeviceProfile()
+  const { tier, fullEffects } = useDeviceProfile()
   const isDark = useIsDark()
+  const reduceBlur = tier !== "desktop"
 
   return (
     <>
@@ -89,8 +90,16 @@ export function HomePage() {
               Glad to Be of Your Service
             </TextAnimate>
             <motion.div
-              initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              initial={
+                reduceBlur
+                  ? { opacity: 0, y: 20 }
+                  : { opacity: 0, filter: "blur(10px)", y: 20 }
+              }
+              animate={
+                reduceBlur
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 1, filter: "blur(0px)", y: 0 }
+              }
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <ShimmerButton

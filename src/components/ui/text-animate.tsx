@@ -7,6 +7,7 @@ import {
   type Variants,
 } from "motion/react"
 
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { cn } from "@/lib/utils"
 
 type AnimationType = "text" | "word" | "character" | "line"
@@ -326,6 +327,50 @@ const defaultItemAnimationVariants: Record<
   },
 }
 
+const reducedBlurItemVariants: Partial<Record<AnimationVariant, Variants>> = {
+  blurIn: {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { duration: 0.3 },
+    },
+    exit: {
+      opacity: 0,
+      transition: { duration: 0.3 },
+    },
+  },
+  blurInUp: {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        y: { duration: 0.3 },
+        opacity: { duration: 0.4 },
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: 20,
+      transition: {
+        y: { duration: 0.3 },
+        opacity: { duration: 0.4 },
+      },
+    },
+  },
+  blurInDown: {
+    hidden: { opacity: 0, y: -20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        y: { duration: 0.3 },
+        opacity: { duration: 0.4 },
+      },
+    },
+  },
+}
+
 const TextAnimateBase = ({
   children,
   delay = 0,
@@ -342,6 +387,8 @@ const TextAnimateBase = ({
   ...props
 }: TextAnimateProps) => {
   const MotionComponent = motionElements[Component]
+  const { tier } = useDeviceProfile()
+  const reduceBlur = tier !== "desktop"
 
   let segments: string[] = []
   switch (by) {
@@ -359,6 +406,13 @@ const TextAnimateBase = ({
       segments = [children]
       break
   }
+
+  const itemVariants = animation
+    ? reduceBlur
+      ? reducedBlurItemVariants[animation] ??
+        defaultItemAnimationVariants[animation].item
+      : defaultItemAnimationVariants[animation].item
+    : defaultItemVariants
 
   const finalVariants = variants
     ? {
@@ -401,9 +455,9 @@ const TextAnimateBase = ({
               },
             },
           },
-          item: defaultItemAnimationVariants[animation].item,
+          item: itemVariants,
         }
-      : { container: defaultContainerVariants, item: defaultItemVariants }
+      : { container: defaultContainerVariants, item: itemVariants }
 
   return (
     <AnimatePresence mode="popLayout">

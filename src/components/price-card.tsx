@@ -6,6 +6,7 @@ import Magnet from "@/components/Magnet"
 import SpecularButton from "@/components/SpecularButton"
 import { BorderBeam } from "@/components/ui/border-beam"
 import { ShineBorder } from "@/components/ui/shine-border"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
 
@@ -45,6 +46,8 @@ export function PriceCard({
   style,
 }: PriceCardProps) {
   const isDark = useIsDark()
+  const { tier } = useDeviceProfile()
+  const reduceBlur = tier !== "desktop"
 
   return (
     <Magnet
@@ -59,13 +62,21 @@ export function PriceCard({
       tilt={20}
     >
       <motion.div
-        initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
-        whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+        initial={
+          reduceBlur
+            ? { opacity: 0, y: 20 }
+            : { opacity: 0, filter: "blur(10px)", y: 20 }
+        }
+        whileInView={
+          reduceBlur
+            ? { opacity: 1, y: 0 }
+            : { opacity: 1, filter: "blur(0px)", y: 0 }
+        }
         viewport={{ once: true }}
         transition={{
           y: { duration: 0.3 },
           opacity: { duration: 0.4 },
-          filter: { duration: 0.3 },
+          ...(reduceBlur ? {} : { filter: { duration: 0.3 } }),
         }}
         className={cn(
           "relative flex w-full flex-col overflow-hidden rounded-[18px] bg-card text-card-foreground shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] ring-1 ring-foreground/5 ring-inset dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]",

@@ -6,7 +6,6 @@ const titles = {
   "/services": "cepotxyz | Services",
   "/portfolio": "cepotxyz | Portfolio",
   "/pricing": "cepotxyz | Price List",
-  "/testimonials": "cepotxyz | Testimonials",
 } as const
 
 export type RoutePath = keyof typeof titles

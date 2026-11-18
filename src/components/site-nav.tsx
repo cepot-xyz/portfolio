@@ -2,7 +2,6 @@ import {
   BriefcaseBusiness,
   ClipboardCheck,
   Home,
-  MessageCircleMore,
   ReceiptText,
   UserRound,
 } from "lucide-react"
@@ -20,7 +19,6 @@ const links = [
   { href: "/services", label: "Services", icon: ClipboardCheck },
   { href: "/portfolio", label: "Portfolio", icon: BriefcaseBusiness },
   { href: "/pricing", label: "Price List", icon: ReceiptText },
-  { href: "/testimonials", label: "Testimonials", icon: MessageCircleMore },
   { href: "/about", label: "About", icon: UserRound },
 ] as const satisfies readonly {
   href: RoutePath

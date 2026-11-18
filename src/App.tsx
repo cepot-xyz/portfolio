@@ -16,7 +16,6 @@ import { HomePage } from "@/pages/home"
 import { PortfolioPage } from "@/pages/portfolio"
 import { PricingPage } from "@/pages/pricing"
 import { ServicesPage } from "@/pages/services"
-import { TestimonialsPage } from "@/pages/testimonials"
 
 const pages: Record<RoutePath, ComponentType> = {
   "/": HomePage,
@@ -24,7 +23,6 @@ const pages: Record<RoutePath, ComponentType> = {
   "/services": ServicesPage,
   "/portfolio": PortfolioPage,
   "/pricing": PricingPage,
-  "/testimonials": TestimonialsPage,
 }
 
 const controlButtonClass =

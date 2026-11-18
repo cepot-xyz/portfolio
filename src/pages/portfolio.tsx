@@ -1,9 +1,13 @@
 import { PortfolioBackdrop } from "@/components/portfolio-backdrop"
+import { PortfolioCardList } from "@/components/portfolio-card-list"
 import { PortfolioCardStack } from "@/components/portfolio-card-stack"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 
 export function PortfolioPage() {
+  const { tier } = useDeviceProfile()
+
   return (
     <section className="relative flex min-h-svh flex-col items-center justify-start overflow-hidden px-6 pt-40 pb-28 text-center">
       <PortfolioBackdrop />
@@ -25,7 +29,7 @@ export function PortfolioPage() {
           </TextAnimate>
         </div>
 
-        <PortfolioCardStack />
+        {tier === "desktop" ? <PortfolioCardStack /> : <PortfolioCardList />}
       </div>
     </section>
   )
