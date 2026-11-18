@@ -66,13 +66,15 @@ function App() {
           />
         </div>
       </main>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-30"
-      >
-        <ProgressiveBlur position="top" height="20%" />
-        <ProgressiveBlur position="bottom" height="20%" />
-      </div>
+      {tier === "desktop" && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 z-30"
+        >
+          <ProgressiveBlur position="top" height="20%" />
+          <ProgressiveBlur position="bottom" height="20%" />
+        </div>
+      )}
       <SiteFooter footerRef={footerRef} />
     </>
   )

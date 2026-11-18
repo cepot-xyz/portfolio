@@ -5,6 +5,7 @@ import CardSwap, { Card } from "@/components/CardSwap"
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 import { ViewportMount } from "@/components/viewport-mount"
 import { playClick } from "@/lib/audio"
+import { useIsDark } from "@/lib/use-is-dark"
 
 const portfolios = [
   {
@@ -45,10 +46,13 @@ const portfolioCardSizes = portfolios.map(({ imageWidth, imageHeight }) => {
 })
 
 export function PortfolioCardStack() {
+  const isDark = useIsDark()
+
   return (
     <div className="pointer-events-none h-[300px] w-full sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] 2xl:h-[760px]">
       <ViewportMount className="h-full w-full">
         <CardSwap
+          theme={isDark ? "dark" : "light"}
           cardSizes={portfolioCardSizes}
           cardDistance={36}
           verticalDistance={38}

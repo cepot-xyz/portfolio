@@ -4,6 +4,7 @@ import GlassSurface from "@/components/GlassSurface"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { Marquee } from "@/components/ui/marquee"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useInView } from "@/lib/use-in-view"
 import { cn } from "@/lib/utils"
 
@@ -55,19 +56,20 @@ const secondRow = testimonials.slice(4)
 
 type Testimonial = (typeof testimonials)[number]
 
-function TestimonialCard({ name, role, body }: Testimonial) {
-  return (
-    <GlassSurface
-      width="22rem"
-      height="auto"
-      borderRadius={12}
-      backgroundOpacity={0.25}
-      className="shrink-0"
-    >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-br from-primary/10 via-card/60 to-card/75"
-      />
+function TestimonialCard({
+  name,
+  role,
+  body,
+  glass,
+}: Testimonial & { glass: boolean }) {
+  const content = (
+    <>
+      {glass && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 rounded-[inherit] bg-linear-to-br from-primary/10 via-card/60 to-card/75"
+        />
+      )}
       <figure className="relative flex h-full w-full flex-col justify-between gap-5 p-3 text-left">
         <blockquote className="text-pretty text-sm leading-relaxed text-card-foreground/90">
           {body}
@@ -77,13 +79,34 @@ function TestimonialCard({ name, role, body }: Testimonial) {
           <p className="mt-0.5 text-xs text-muted-foreground">{role}</p>
         </figcaption>
       </figure>
-    </GlassSurface>
+    </>
+  )
+
+  if (glass) {
+    return (
+      <GlassSurface
+        width="22rem"
+        height="auto"
+        borderRadius={12}
+        backgroundOpacity={0.25}
+        className="shrink-0"
+      >
+        {content}
+      </GlassSurface>
+    )
+  }
+
+  return (
+    <div className="relative w-[22rem] shrink-0 overflow-hidden rounded-xl bg-card text-card-foreground shadow-[0_18px_36px_-24px_rgba(24,24,27,0.35)] ring-1 ring-foreground/5 ring-inset">
+      {content}
+    </div>
   )
 }
 
 export function TestimonialsSection({ className }: { className?: string }) {
   const sectionRef = useRef<HTMLElement>(null)
   const inView = useInView(sectionRef, { rootMargin: "200px 0px" })
+  const { fullEffects } = useDeviceProfile()
 
   return (
     <section
@@ -109,12 +132,20 @@ export function TestimonialsSection({ className }: { className?: string }) {
       <div className="flex flex-col gap-4">
         <Marquee paused={!inView} className="[--duration:35s]">
           {firstRow.map((testimonial) => (
-            <TestimonialCard key={testimonial.name} {...testimonial} />
+            <TestimonialCard
+              key={testimonial.name}
+              {...testimonial}
+              glass={fullEffects}
+            />
           ))}
         </Marquee>
         <Marquee paused={!inView} reverse className="[--duration:40s]">
           {secondRow.map((testimonial) => (
-            <TestimonialCard key={testimonial.name} {...testimonial} />
+            <TestimonialCard
+              key={testimonial.name}
+              {...testimonial}
+              glass={fullEffects}
+            />
           ))}
         </Marquee>
       </div>
