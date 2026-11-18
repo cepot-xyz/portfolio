@@ -9,6 +9,7 @@ import { GhostFibersBackground } from "@/components/ghost-fibers-background"
 import Magnet from "@/components/Magnet"
 import MetallicPaint from "@/components/MetallicPaint"
 import { ViewportMount } from "@/components/viewport-mount"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { ShimmerButton } from "@/components/ui/shimmer-button"
@@ -17,6 +18,8 @@ import Text3DFlip from "@/components/ui/text-3d-flip"
 const logoUrl = `${import.meta.env.BASE_URL}Assets/Cepot White Logo.svg`
 
 export function HomePage() {
+  const { fullEffects } = useDeviceProfile()
+
   return (
     <>
       <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 py-24 text-center">
@@ -30,18 +33,28 @@ export function HomePage() {
         </div>
         <div className="relative z-10 grid w-full max-w-6xl items-center gap-20 lg:grid-cols-2 lg:gap-32">
           <div className="flex justify-center lg:justify-start">
-            <Magnet
-              wrapperClassName="h-[18rem] w-full lg:h-[24rem]"
-              innerClassName="h-full w-full"
-              padding={100}
-              magnetStrength={1}
-              maxOffset={40}
-              tilt={20}
-            >
-              <ViewportMount className="h-full w-full">
-                <MetallicPaint imageSrc={logoUrl} scale={0.95} />
-              </ViewportMount>
-            </Magnet>
+            {fullEffects ? (
+              <Magnet
+                wrapperClassName="h-[18rem] w-full lg:h-[24rem]"
+                innerClassName="h-full w-full"
+                padding={100}
+                magnetStrength={1}
+                maxOffset={40}
+                tilt={20}
+              >
+                <ViewportMount className="h-full w-full">
+                  <MetallicPaint imageSrc={logoUrl} scale={0.95} />
+                </ViewportMount>
+              </Magnet>
+            ) : (
+              <div className="flex h-[18rem] w-full items-center justify-center lg:h-[24rem]">
+                <img
+                  src={logoUrl}
+                  alt=""
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            )}
           </div>
           <div className="flex flex-col items-center gap-4 lg:items-start lg:text-left">
             <div className="flex min-h-24 w-full items-end justify-center lg:justify-start">

@@ -1,4 +1,5 @@
 import GhostFibers, { type GhostFibersProps } from "@/components/GhostFibers"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
 
 type GhostFibersBackgroundProps = Omit<
@@ -8,6 +9,9 @@ type GhostFibersBackgroundProps = Omit<
 
 export function GhostFibersBackground(props: GhostFibersBackgroundProps) {
   const isDark = useIsDark()
+  const { fullEffects } = useDeviceProfile()
+
+  if (!fullEffects) return null
 
   return (
     <GhostFibers

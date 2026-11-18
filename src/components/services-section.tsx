@@ -4,6 +4,7 @@ import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { ViewportMount } from "@/components/viewport-mount"
 import { openPricingSection } from "@/lib/pricing-navigation"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
 
@@ -42,6 +43,7 @@ export function ServicesSection({
   variant?: "page" | "embedded"
 }) {
   const isDark = useIsDark()
+  const { fullEffects } = useDeviceProfile()
   const isPage = variant === "page"
 
   const handleOrder = (target: string) => {
@@ -59,35 +61,37 @@ export function ServicesSection({
     <section
       className={cn("relative isolate", !isPage && "py-20 sm:py-24")}
     >
-      <div
-        aria-hidden="true"
-        className={cn(
-          "pointer-events-none -z-10 overflow-hidden",
-          isPage ? "fixed inset-0" : "absolute inset-0"
-        )}
-      >
-        <ViewportMount className="h-full w-full">
-          <ShapeGrid
-            shape="square"
-            cellSize={56}
-            lineWidth={1}
-            lineColor={isDark ? "#3f3f46" : "#d4d4d8"}
-            hoverColor={isDark ? "#fafafa" : "#18181b"}
-            hoverFillColor={isDark ? "#a1a1aa" : "#52525b"}
-            fillOpacity={0.14}
-            rainbow={false}
-            direction="diagonal"
-            speed={0.35}
-            radius={2}
-            trail={0.55}
-            glow={isDark ? 0.35 : 0.2}
-            twinkle={0}
-            fade={0.9}
-            opacity={0.8}
-            className="h-full w-full"
-          />
-        </ViewportMount>
-      </div>
+      {fullEffects && (
+        <div
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none -z-10 overflow-hidden",
+            isPage ? "fixed inset-0" : "absolute inset-0"
+          )}
+        >
+          <ViewportMount className="h-full w-full">
+            <ShapeGrid
+              shape="square"
+              cellSize={56}
+              lineWidth={1}
+              lineColor={isDark ? "#3f3f46" : "#d4d4d8"}
+              hoverColor={isDark ? "#fafafa" : "#18181b"}
+              hoverFillColor={isDark ? "#a1a1aa" : "#52525b"}
+              fillOpacity={0.14}
+              rainbow={false}
+              direction="diagonal"
+              speed={0.35}
+              radius={2}
+              trail={0.55}
+              glow={isDark ? 0.35 : 0.2}
+              twinkle={0}
+              fade={0.9}
+              opacity={0.8}
+              className="h-full w-full"
+            />
+          </ViewportMount>
+        </div>
+      )}
       <div
         className={cn(
           "flex flex-col items-center px-6 text-center",

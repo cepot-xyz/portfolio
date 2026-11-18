@@ -14,11 +14,6 @@ const socials = [
     external: true,
   },
   {
-    label: "WhatsApp",
-    href: "https://wa.me/6283842718181",
-    external: true,
-  },
-  {
     label: "Email",
     href: "mailto:cepotmain@gmail.com",
     external: false,

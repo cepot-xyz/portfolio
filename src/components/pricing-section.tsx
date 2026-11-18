@@ -6,6 +6,7 @@ import { KineticHeading } from "@/components/ui/kinetic-heading"
 import { TextAnimate } from "@/components/ui/text-animate"
 import { ViewportMount } from "@/components/viewport-mount"
 import { PRICING_TARGET_KEY } from "@/lib/pricing-navigation"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
 
@@ -188,22 +189,6 @@ function useIdrRate() {
   return idrRate
 }
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(
-    () => window.matchMedia("(max-width: 767px)").matches
-  )
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 767px)")
-    const update = () => setIsMobile(query.matches)
-    update()
-    query.addEventListener("change", update)
-    return () => query.removeEventListener("change", update)
-  }, [])
-
-  return isMobile
-}
-
 export function PricingSection({
   variant = "embedded",
 }: {
@@ -211,9 +196,9 @@ export function PricingSection({
 }) {
   const isDark = useIsDark()
   const idrRate = useIdrRate()
-  const isMobile = useIsMobile()
+  const { fullEffects } = useDeviceProfile()
   const isPage = variant === "page"
-  const showBackground = isPage || !isMobile
+  const showBackground = fullEffects
 
   useEffect(() => {
     if (!isPage) return
@@ -293,7 +278,7 @@ export function PricingSection({
               >
                 {title}
               </KineticHeading>
-              <div className="flex w-full flex-wrap justify-center gap-6">
+              <div className="flex w-full flex-wrap items-start justify-center gap-6">
                 {cards.map((card, cardIndex) => (
                   <div
                     key={cardIndex}

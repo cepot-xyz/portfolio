@@ -1,5 +1,6 @@
 import { useRef, type ComponentType } from "react"
 
+import { AmbientBackdrop } from "@/components/ambient-backdrop"
 import { BgmToggle } from "@/components/bgm-toggle"
 import GlassSurface from "@/components/GlassSurface"
 import { SiteFooter } from "@/components/site-footer"
@@ -9,6 +10,7 @@ import { TextLoopSection } from "@/components/text-loop-section"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { ProgressiveBlur } from "@/components/ui/progressive-blur"
 import { useHashRoute, type RoutePath } from "@/lib/use-hash-route"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useInView } from "@/lib/use-in-view"
 import { HomePage } from "@/pages/home"
 import { PortfolioPage } from "@/pages/portfolio"
@@ -31,6 +33,7 @@ const controlGlassClass = "shrink-0"
 
 function App() {
   const route = useHashRoute()
+  const { fullEffects } = useDeviceProfile()
   const footerRef = useRef<HTMLElement>(null)
   const footerVisible = useInView(footerRef)
   const Page = pages[route]
@@ -63,10 +66,13 @@ function App() {
       </div>
       <SiteNav current={route} hidden={footerVisible} />
       <main className="min-h-svh bg-background text-foreground">
-        <Page />
-        <TextLoopSection
-          showGridBackground={route === "/" || route === "/portfolio"}
-        />
+        {!fullEffects && <AmbientBackdrop />}
+        <div className="relative z-10">
+          <Page />
+          <TextLoopSection
+            showGridBackground={route === "/" || route === "/portfolio"}
+          />
+        </div>
       </main>
       <div
         aria-hidden="true"

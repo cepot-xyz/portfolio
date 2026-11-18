@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type ReactNode } from 'react';
 
+import { useDeviceProfile } from '@/lib/use-device-profile';
 import { releaseWebGLContext } from '@/lib/webgl';
 
 const SIZES: Record<SpecularButtonSize, string> = {
@@ -247,6 +248,7 @@ const SpecularButton = ({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wakeRef = useRef<(() => void) | null>(null);
+  const { fullEffects } = useDeviceProfile();
   const [inViewport, setInViewport] = useState(
     () => typeof IntersectionObserver === 'undefined'
   );
@@ -282,7 +284,7 @@ const SpecularButton = ({
   }, []);
 
   useEffect(() => {
-    if (!inViewport) return undefined;
+    if (!fullEffects || !inViewport) return undefined;
 
     const button = buttonRef.current;
     const canvas = canvasRef.current;
@@ -492,7 +494,7 @@ const SpecularButton = ({
       gl.deleteProgram(program);
       releaseWebGLContext(canvas, gl);
     };
-  }, [inViewport]);
+  }, [fullEffects, inViewport]);
 
   useEffect(() => {
     wakeRef.current?.();
@@ -517,7 +519,7 @@ const SpecularButton = ({
       }
       {...rest}
     >
-      {inViewport && (
+      {fullEffects && inViewport && (
         <canvas
           ref={canvasRef}
           className="pointer-events-none absolute -inset-6 z-[1] block h-[calc(100%+48px)] w-[calc(100%+48px)]"

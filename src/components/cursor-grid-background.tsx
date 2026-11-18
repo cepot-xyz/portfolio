@@ -1,4 +1,5 @@
 import CursorGrid, { type CursorGridProps } from "@/components/CursorGrid"
+import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
 
 type CursorGridBackgroundProps = Omit<
@@ -8,6 +9,9 @@ type CursorGridBackgroundProps = Omit<
 
 export function CursorGridBackground(props: CursorGridBackgroundProps) {
   const isDark = useIsDark()
+  const { fullEffects } = useDeviceProfile()
+
+  if (!fullEffects) return null
 
   return (
     <CursorGrid

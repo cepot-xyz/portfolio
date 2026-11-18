@@ -49,8 +49,8 @@ export function PriceCard({
   return (
     <Magnet
       style={{ display: "block" }}
-      wrapperClassName="h-full w-full"
-      innerClassName="h-full w-full"
+      wrapperClassName="w-full"
+      innerClassName="w-full"
       padding={100}
       alwaysFollow
       exclusive={false}
@@ -68,10 +68,10 @@ export function PriceCard({
           filter: { duration: 0.3 },
         }}
         className={cn(
-          "relative flex h-full w-full flex-col overflow-hidden rounded-[18px] bg-card text-card-foreground shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] ring-1 ring-foreground/5 ring-inset dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]",
+          "relative flex w-full flex-col overflow-hidden rounded-[18px] bg-card text-card-foreground shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] ring-1 ring-foreground/5 ring-inset dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]",
           className
         )}
-        style={{ minHeight: 560, ...style }}
+        style={style}
       >
         <div className="flex flex-1 flex-col p-6">
           <p className="text-xs text-muted-foreground">{eyebrow}</p>
