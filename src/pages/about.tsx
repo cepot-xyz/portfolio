@@ -10,8 +10,11 @@ import { useIsDark } from "@/lib/use-is-dark"
 const Lanyard = lazy(() => import("@/components/Lanyard"))
 const profileUrl = `${import.meta.env.BASE_URL}Assets/about/profile.png`
 
-const aboutLorem =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+const aboutParagraphs = [
+  "I'm Affandi Rahman Hakim, also known as cepot, a Motion Creative Developer with a strong interest in motion design, visual storytelling, and the space where creativity meets technology. I enjoy turning ideas into clean, expressive visuals, especially through motion, short-form content, and design systems that feel intentional and human. I'm curious about how design, motion, and technology can work together to communicate better.",
+  "Alongside my studies in Information Technology at UIN Walisongo Semarang, I have worked as a Graphic Designer at Backstage Prodigy and gained experience through a Graphic Design internship at Aneka Service Kudus, campus organizations, and independent projects. I enjoy using tools such as After Effects, Photoshop, Figma, and DaVinci Resolve, and I'm also interested in building with React, TypeScript, Python, Rust, C#, and Unity.",
+  "One of my projects is Walisongo Domains Map, an interactive 3D visualization that maps 269 subdomains of walisongo.ac.id. It brings together academic systems, information portals, faculty sites, study programs, and student press domains in one explorable map, with color categories, search, and detail overlays. I built it with D3.js, vanilla JavaScript, HTML5, and CSS3.",
+]
 
 export function AboutPage() {
   const { tier } = useDeviceProfile()
@@ -71,21 +74,27 @@ export function AboutPage() {
 
           <div className="pointer-events-none relative z-20 grid grid-cols-[1.1fr_0.9fr] items-start gap-12">
             <div aria-hidden="true" className="h-[64rem]" />
-            <div className="flex flex-col items-start gap-6 pt-32 text-left">
-              <KineticHeading className="text-5xl sm:text-6xl">
-                About
-              </KineticHeading>
-              <TextAnimate
-                as="p"
-                animation="blurInUp"
-                by="character"
-                delay={0.1}
-                once
-                className="max-w-md text-muted-foreground"
-              >
-                Hi, I'm cepot, a creative motion developer.
-              </TextAnimate>
-              <p className="max-w-xl text-muted-foreground">{aboutLorem}</p>
+            <div className="flex flex-col items-start pt-32 text-left">
+              <div className="flex w-full flex-col items-start gap-6 rounded-[24px] border border-border bg-card/80 p-8 text-card-foreground shadow-[0_24px_48px_-26px_rgba(24,24,27,0.32),0_8px_18px_-12px_rgba(24,24,27,0.18)] ring-1 ring-foreground/5 ring-inset backdrop-blur-md dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85),0_8px_18px_-10px_rgba(0,0,0,0.6)]">
+                <KineticHeading className="text-5xl sm:text-6xl">
+                  About
+                </KineticHeading>
+                <TextAnimate
+                  as="p"
+                  animation="blurInUp"
+                  by="character"
+                  delay={0.1}
+                  once
+                  className="max-w-md text-muted-foreground"
+                >
+                  Hi, I'm cepot, a creative motion developer.
+                </TextAnimate>
+                {aboutParagraphs.map((paragraph) => (
+                  <p key={paragraph} className="max-w-xl text-muted-foreground">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -107,7 +116,7 @@ export function AboutPage() {
             />
           </div>
 
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex w-full flex-col items-center gap-4 rounded-[24px] border border-border bg-card/80 p-6 text-card-foreground shadow-[0_18px_36px_-24px_rgba(24,24,27,0.35)] ring-1 ring-foreground/5 ring-inset backdrop-blur-md dark:shadow-[0_24px_48px_-24px_rgba(0,0,0,0.85)]">
             <KineticHeading className="text-5xl sm:text-6xl">
               About
             </KineticHeading>
@@ -121,10 +130,11 @@ export function AboutPage() {
             >
               Hi, I'm cepot, a creative motion developer.
             </TextAnimate>
-            <p className="max-w-xl text-muted-foreground">
-              Crafting visual identities with precision and soul. Motion,
-              design, and creative direction for modern brands.
-            </p>
+            {aboutParagraphs.map((paragraph) => (
+              <p key={paragraph} className="max-w-xl text-muted-foreground">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       )}

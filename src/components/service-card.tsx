@@ -1,7 +1,7 @@
 import { motion } from "motion/react"
 
 import Magnet from "@/components/Magnet"
-import SpecularButton from "@/components/SpecularButton"
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 import { ShineBorder } from "@/components/ui/shine-border"
 import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useIsDark } from "@/lib/use-is-dark"
@@ -83,20 +83,16 @@ export function ServiceCard({
             {description}
           </p>
           <div className="mt-6 flex justify-center">
-            <SpecularButton
-              size="md"
-              tint="#ffffff"
-              tintOpacity={isDark ? 0.04 : 0.5}
-              textColor={isDark ? "#f5f5f5" : "#18181b"}
-              lineColor={isDark ? "#ffffff" : "#18181b"}
-              baseColor={isDark ? "#525252" : "#a1a1aa"}
-              glow={isDark ? 1 : 0.6}
+            <InteractiveHoverButton
+              type="button"
+              className="text-sm tracking-tight"
+              onPointerDown={(event) => event.stopPropagation()}
               onClick={() => {
                 onOrder(pricingTarget)
               }}
             >
               Order Now
-            </SpecularButton>
+            </InteractiveHoverButton>
           </div>
         </div>
         <ShineBorder

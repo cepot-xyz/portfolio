@@ -3,7 +3,7 @@ import { motion } from "motion/react"
 
 import AnimatedList from "@/components/AnimatedList"
 import Magnet from "@/components/Magnet"
-import SpecularButton from "@/components/SpecularButton"
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
 import { BorderBeam } from "@/components/ui/border-beam"
 import { ShineBorder } from "@/components/ui/shine-border"
 import { useDeviceProfile } from "@/lib/use-device-profile"
@@ -137,17 +137,13 @@ export function PriceCard({
           </div>
           {children}
           <div className="mt-auto flex justify-center pt-6">
-            <SpecularButton
-              size="md"
-              tint="#ffffff"
-              tintOpacity={isDark ? 0.04 : 0.5}
-              textColor={isDark ? "#f5f5f5" : "#18181b"}
-              lineColor={isDark ? "#ffffff" : "#18181b"}
-              baseColor={isDark ? "#525252" : "#a1a1aa"}
-              glow={isDark ? 1 : 0.6}
+            <InteractiveHoverButton
+              type="button"
+              className="text-sm tracking-tight"
+              onPointerDown={(event) => event.stopPropagation()}
             >
               Get Started
-            </SpecularButton>
+            </InteractiveHoverButton>
           </div>
         </div>
         {effect === "shine" && (

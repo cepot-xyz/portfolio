@@ -19,7 +19,7 @@ import Text3DFlip from "@/components/ui/text-3d-flip"
 const logoUrl = `${import.meta.env.BASE_URL}Assets/Cepot White Logo.svg`
 
 export function HomePage() {
-  const { tier, fullEffects } = useDeviceProfile()
+  const { tier } = useDeviceProfile()
   const isDark = useIsDark()
   const reduceBlur = tier !== "desktop"
 
@@ -36,7 +36,7 @@ export function HomePage() {
         </div>
         <div className="relative z-10 grid w-full max-w-6xl items-center gap-20 lg:grid-cols-2 lg:gap-32">
           <div className="flex justify-center lg:justify-start">
-            {fullEffects ? (
+            {tier === "desktop" ? (
               <Magnet
                 wrapperClassName="h-[18rem] w-full lg:h-[24rem]"
                 innerClassName="h-full w-full"

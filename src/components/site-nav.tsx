@@ -47,7 +47,7 @@ export function SiteNav({
       <StaggeredMenu
         position="left"
         isFixed
-        hidden={hidden}
+        hidden={false}
         items={menuItems}
         colors={
           isDark

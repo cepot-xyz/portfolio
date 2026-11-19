@@ -40,7 +40,7 @@ function readProfile(): DeviceProfile {
     tier === "desktop" &&
     ((memory !== undefined && memory <= 4) || (cores !== undefined && cores <= 2))
 
-  return { tier, lowPower, fullEffects: tier === "desktop" && !lowPower }
+  return { tier, lowPower, fullEffects: tier === "desktop" }
 }
 
 export function useDeviceProfile(): DeviceProfile {
