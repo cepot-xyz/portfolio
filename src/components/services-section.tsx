@@ -13,7 +13,7 @@ const asset = (name: string) => `${import.meta.env.BASE_URL}Assets/${name}`
 const services = [
   {
     image: asset("services/motiongraphic.png"),
-    alt: "Motion graphic preview",
+    alt: "Animasi motion graphic untuk promosi produk dan brand story",
     title: "Motion Graphic",
     description:
       "Animated visuals for launches, promos, and brand stories.",
@@ -21,7 +21,7 @@ const services = [
   },
   {
     image: asset("services/videoediting.png"),
-    alt: "Video editing preview",
+    alt: "Video editing dengan roughcut, sound design, dan color grading",
     title: "Video Editing",
     description:
       "Clean cuts, sound design, and color grading for your footage.",
@@ -29,7 +29,7 @@ const services = [
   },
   {
     image: asset("services/graphicdesign.png"),
-    alt: "Graphic design preview",
+    alt: "Desain logo, feed Instagram, ID card plus lanyard, dan banner",
     title: "Graphic Design",
     description:
       "Logos, social feeds, and print assets that stay on brand.",

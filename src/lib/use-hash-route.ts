@@ -1,30 +1,37 @@
 import { useEffect, useState } from "react"
 
+const siteUrl = "https://www.cepotxyz.my.id/"
+
 const routeMeta = {
   "/": {
-    title: "cepotxyz | Creative Motion Developer",
+    label: "Home",
+    title: "cepotxyz | Jasa Motion Graphic, Video Editing & Desain Grafis Semarang",
     description:
-      "cepotxyz is a creative motion developer crafting visual identities with precision and soul. Motion, design, and creative direction for modern brands.",
+      "Jasa motion graphic, video editing, dan desain grafis di Semarang. Logo, feed Instagram, ID card, dan banner untuk UMKM, startup, dan instansi.",
   },
   "/about": {
-    title: "cepotxyz | About",
+    label: "Tentang",
+    title: "Tentang cepotxyz | Creative Motion Developer Semarang",
     description:
-      "Learn about cepotxyz, a creative motion developer focused on visual identities, motion, design, and creative direction.",
+      "Tentang Affandi Rahman Hakim, creative motion developer di Semarang. Motion design, visual storytelling, dan desain grafis untuk brand.",
   },
   "/services": {
-    title: "cepotxyz | Services",
+    label: "Layanan",
+    title: "Jasa Motion Graphic, Video Editing & Desain Grafis | cepotxyz",
     description:
-      "Explore motion, design, and creative direction services from cepotxyz for modern brands.",
+      "Jasa motion graphic, video editing, logo, feed Instagram, ID card plus lanyard, dan banner untuk UMKM, startup, dan instansi di Semarang.",
   },
   "/portfolio": {
-    title: "cepotxyz | Portfolio",
+    label: "Portofolio",
+    title: "Portofolio Motion Graphic & Video Editing | cepotxyz",
     description:
-      "Selected projects and visual work by cepotxyz across motion, design, and creative direction.",
+      "Portofolio motion graphic, video editing, dan desain grafis cepotxyz untuk promosi produk, launch brand, dan kebutuhan visual UMKM.",
   },
   "/pricing": {
-    title: "cepotxyz | Price List",
+    label: "Harga",
+    title: "Harga Jasa Motion Graphic, Video Editing & Desain Grafis | cepotxyz",
     description:
-      "Price list for cepotxyz creative motion, design, and video services.",
+      "Harga motion graphic mulai Rp60.000, video editing Rp50.000, logo Rp150.000, feed Instagram Rp15.000 per slide, ID card Rp15.000, banner Rp100.000.",
   },
 } as const
 
@@ -39,6 +46,52 @@ function setMeta(selector: string, content: string) {
   document.querySelector<HTMLMetaElement>(selector)?.setAttribute("content", content)
 }
 
+function setJsonLd(route: RoutePath) {
+  const meta = routeMeta[route]
+  const pageUrl = route === "/" ? siteUrl : `${siteUrl}#${route}`
+
+  let script = document.querySelector<HTMLScriptElement>("#route-schema")
+  if (!script) {
+    script = document.createElement("script")
+    script.id = "route-schema"
+    script.type = "application/ld+json"
+    document.head.appendChild(script)
+  }
+
+  script.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${siteUrl}#webpage-${route === "/" ? "home" : route.slice(1)}`,
+    url: pageUrl,
+    name: meta.title,
+    description: meta.description,
+    isPartOf: {
+      "@id": `${siteUrl}#website`,
+    },
+    breadcrumb: {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+        ...(route === "/"
+          ? []
+          : [
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: meta.label,
+                item: pageUrl,
+              },
+            ]),
+      ],
+    },
+  })
+}
+
 export function useHashRoute() {
   const [route, setRoute] = useState<RoutePath>(getRoute)
 
@@ -50,12 +103,17 @@ export function useHashRoute() {
 
   useEffect(() => {
     const meta = routeMeta[route]
+    const currentUrl = window.location.href
+
     document.title = meta.title
     setMeta('meta[name="description"]', meta.description)
     setMeta('meta[property="og:title"]', meta.title)
     setMeta('meta[property="og:description"]', meta.description)
+    setMeta('meta[property="og:url"]', currentUrl)
     setMeta('meta[name="twitter:title"]', meta.title)
     setMeta('meta[name="twitter:description"]', meta.description)
+    setMeta('meta[name="twitter:url"]', currentUrl)
+    setJsonLd(route)
     window.scrollTo(0, 0)
   }, [route])
 
