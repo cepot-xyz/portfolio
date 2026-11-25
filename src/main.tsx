@@ -8,6 +8,14 @@ document.addEventListener('contextmenu', (event) => {
   event.preventDefault()
 })
 
+try {
+  const redirect = sessionStorage.getItem('spa-redirect')
+  if (redirect) {
+    sessionStorage.removeItem('spa-redirect')
+    window.history.replaceState(null, '', redirect)
+  }
+} catch {}
+
 const root = createRoot(document.getElementById('root')!)
 const wrapper = detectWebWrapper()
 

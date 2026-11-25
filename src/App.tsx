@@ -8,7 +8,7 @@ import { SoundEffects } from "@/components/sound-effects"
 import { TextLoopSection } from "@/components/text-loop-section"
 import { AnimatedThemeToggler } from "@/components/ui/animated-theme-toggler"
 import { ProgressiveBlur } from "@/components/ui/progressive-blur"
-import { useHashRoute, type RoutePath } from "@/lib/use-hash-route"
+import { useAppRoute, type RoutePath } from "@/lib/use-app-route"
 import { useDeviceProfile } from "@/lib/use-device-profile"
 import { useInView } from "@/lib/use-in-view"
 import { AboutPage } from "@/pages/about"
@@ -32,7 +32,7 @@ const controlSurfaceClass =
   "relative size-10 shrink-0 rounded-full border border-border bg-card shadow-sm"
 
 function App() {
-  const route = useHashRoute()
+  const route = useAppRoute()
   const { tier, fullEffects } = useDeviceProfile()
   const footerRef = useRef<HTMLElement>(null)
   const footerVisible = useInView(footerRef)

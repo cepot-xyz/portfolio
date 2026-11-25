@@ -37,18 +37,31 @@ const routeMeta = {
 
 export type RoutePath = keyof typeof routeMeta
 
+function normalizePath(pathname: string) {
+  const trimmed = pathname.replace(/\/+$/, "")
+  return trimmed || "/"
+}
+
 function getRoute(): RoutePath {
-  const path = window.location.hash.replace(/^#/, "")
+  const path = normalizePath(window.location.pathname)
   return path in routeMeta ? (path as RoutePath) : "/"
+}
+
+function pageUrlFor(route: RoutePath) {
+  return route === "/" ? siteUrl : `${siteUrl}${route.slice(1)}/`
 }
 
 function setMeta(selector: string, content: string) {
   document.querySelector<HTMLMetaElement>(selector)?.setAttribute("content", content)
 }
 
+function setCanonical(href: string) {
+  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute("href", href)
+}
+
 function setJsonLd(route: RoutePath) {
   const meta = routeMeta[route]
-  const pageUrl = route === "/" ? siteUrl : `${siteUrl}#${route}`
+  const pageUrl = pageUrlFor(route)
 
   let script = document.querySelector<HTMLScriptElement>("#route-schema")
   if (!script) {
@@ -92,27 +105,72 @@ function setJsonLd(route: RoutePath) {
   })
 }
 
-export function useHashRoute() {
+export function navigate(path: RoutePath) {
+  if (getRoute() !== path) {
+    window.history.pushState(null, "", path === "/" ? "/" : `${path}/`)
+    window.dispatchEvent(new PopStateEvent("popstate"))
+    return
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" })
+}
+
+export function useAppRoute() {
   const [route, setRoute] = useState<RoutePath>(getRoute)
 
   useEffect(() => {
-    const onHashChange = () => setRoute(getRoute())
-    window.addEventListener("hashchange", onHashChange)
-    return () => window.removeEventListener("hashchange", onHashChange)
+    const onPopState = () => setRoute(getRoute())
+    const onLinkClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return
+      }
+
+      const target = event.target
+      if (!(target instanceof Element)) return
+
+      const anchor = target.closest("a")
+      if (!anchor || !anchor.hasAttribute("href") || anchor.hasAttribute("download")) return
+      if (anchor.target && anchor.target !== "_self") return
+
+      const url = new URL(anchor.href, window.location.href)
+      if (url.origin !== window.location.origin) return
+
+      const path = normalizePath(url.pathname)
+      if (!(path in routeMeta)) return
+
+      event.preventDefault()
+      navigate(path as RoutePath)
+    }
+
+    window.addEventListener("popstate", onPopState)
+    document.addEventListener("click", onLinkClick)
+
+    return () => {
+      window.removeEventListener("popstate", onPopState)
+      document.removeEventListener("click", onLinkClick)
+    }
   }, [])
 
   useEffect(() => {
     const meta = routeMeta[route]
-    const currentUrl = window.location.href
+    const pageUrl = pageUrlFor(route)
 
     document.title = meta.title
     setMeta('meta[name="description"]', meta.description)
     setMeta('meta[property="og:title"]', meta.title)
     setMeta('meta[property="og:description"]', meta.description)
-    setMeta('meta[property="og:url"]', currentUrl)
+    setMeta('meta[property="og:url"]', pageUrl)
     setMeta('meta[name="twitter:title"]', meta.title)
     setMeta('meta[name="twitter:description"]', meta.description)
-    setMeta('meta[name="twitter:url"]', currentUrl)
+    setMeta('meta[name="twitter:url"]', pageUrl)
+    setCanonical(pageUrl)
     setJsonLd(route)
     window.scrollTo(0, 0)
   }, [route])

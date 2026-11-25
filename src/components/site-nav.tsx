@@ -10,7 +10,7 @@ import StaggeredMenu from "@/components/StaggeredMenu"
 import { Dock, DockIcon } from "@/components/ui/dock"
 import { playHover } from "@/lib/audio"
 import { useDeviceProfile } from "@/lib/use-device-profile"
-import type { RoutePath } from "@/lib/use-hash-route"
+import type { RoutePath } from "@/lib/use-app-route"
 import { useIsDark } from "@/lib/use-is-dark"
 import { cn } from "@/lib/utils"
 
@@ -29,7 +29,7 @@ const links = [
 const menuItems = links.map(({ href, label }) => ({
   label,
   ariaLabel: label,
-  link: `#${href}`,
+  link: href,
 }))
 
 export function SiteNav({
@@ -79,7 +79,7 @@ export function SiteNav({
           {links.map(({ href, label, icon: Icon }) => (
             <DockIcon key={href} active={current === href}>
               <a
-                href={`#${href}`}
+                href={href}
                 aria-label={label}
                 aria-current={current === href ? "page" : undefined}
                 onMouseEnter={() => playHover()}
