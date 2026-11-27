@@ -9,11 +9,6 @@ const socials = [
     external: true,
   },
   {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/in/affandi-rahman-hakim-ab80b1372/",
-    external: true,
-  },
-  {
     label: "Email",
     href: "mailto:cepotmain@gmail.com",
     external: false,

@@ -11,7 +11,7 @@ const Lanyard = lazy(() => import("@/components/Lanyard"))
 const profileUrl = `${import.meta.env.BASE_URL}Assets/about/profile.png`
 
 const aboutParagraphs = [
-  "I'm Affandi Rahman Hakim, also known as cepot, a Motion Creative Developer with a strong interest in motion design, visual storytelling, and the space where creativity meets technology. I enjoy turning ideas into clean, expressive visuals, especially through motion, short-form content, and design systems that feel intentional and human. I'm curious about how design, motion, and technology can work together to communicate better.",
+  "I'm a Motion Creative Developer with a strong interest in motion design, visual storytelling, and the space where creativity meets technology. I enjoy turning ideas into clean, expressive visuals, especially through motion, short-form content, and design systems that feel intentional and human. I'm curious about how design, motion, and technology can work together to communicate better.",
   "Alongside my studies in Information Technology at UIN Walisongo Semarang, I have worked as a Graphic Designer at Backstage Prodigy and gained experience through a Graphic Design internship at Aneka Service Kudus, campus organizations, and independent projects. I enjoy using tools such as After Effects, Photoshop, Figma, and DaVinci Resolve, and I'm also interested in building with React, TypeScript, Python, Rust, C#, and Unity.",
   "One of my projects is Walisongo Domains Map, an interactive 3D visualization that maps 269 subdomains of walisongo.ac.id. It brings together academic systems, information portals, faculty sites, study programs, and student press domains in one explorable map, with color categories, search, and detail overlays. I built it with D3.js, vanilla JavaScript, HTML5, and CSS3.",
 ]
@@ -87,7 +87,7 @@ export function AboutPage() {
                   once
                   className="max-w-md text-muted-foreground"
                 >
-                  Hi, I'm cepot, a creative motion developer.
+                  Hi, I'm a creative motion developer.
                 </TextAnimate>
                 {aboutParagraphs.map((paragraph) => (
                   <p key={paragraph} className="max-w-xl text-muted-foreground">
@@ -103,7 +103,7 @@ export function AboutPage() {
           <div className="relative w-full max-w-[18rem] overflow-hidden rounded-3xl border border-border bg-card shadow-xl">
             <img
               src={profileUrl}
-              alt="cepot"
+              alt="Profile portrait"
               draggable={false}
               className="aspect-[3/4] w-full object-cover"
             />
@@ -128,7 +128,7 @@ export function AboutPage() {
               once
               className="max-w-md text-muted-foreground"
             >
-              Hi, I'm cepot, a creative motion developer.
+              Hi, I'm a creative motion developer.
             </TextAnimate>
             {aboutParagraphs.map((paragraph) => (
               <p key={paragraph} className="max-w-xl text-muted-foreground">
